@@ -1,0 +1,26 @@
+{
+  "name": "connex-sync-event-fetch",
+  "version": "1.0.0",
+  "description": "Fetch the events from the Smart Contract in Backend synchronously.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "npm run test"
+  },
+  "keywords": [
+    "VeChain",
+    "Connex",
+    "Event",
+    "Fetch",
+    "Sync"
+  ],
+  "author": "Adam",
+  "license": "ISC",
+  "dependencies": {
+    "@vechain/connex-driver": "^2.0.10",
+    "@vechain/connex-framework": "^2.0.10",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "thor-devkit": "^2.0.5"
+  }
+}
