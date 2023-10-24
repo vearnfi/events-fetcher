@@ -2,10 +2,13 @@ import { Framework } from '@vechain/connex-framework';
 import { Driver, SimpleNet, SimpleWallet } from '@vechain/connex-driver'
 import {ConnexUtils } from './blockchain/connex-utils'
 import {getNetworkConfig} from './config/index';
+import * as vthoArtifact from "./abis/Energy.json";
+import * as traderArtifact from "./abis/Trader.json";
+import {AbiItem} from "./typings/types";
 import { fetchApprovals } from './utils/fetch-approvals';
 import { fetchConfigs } from './utils/fetch-configs';
+import { fetchSwaps } from './utils/fetch-swaps';
 
-//Server Environment Setup
 import express from 'express';
 import cors from 'cors';
 
@@ -35,6 +38,18 @@ app.listen(process.env.PORT || 5000, async function () {
   const connex = new Framework(driver);
   const connexUtils = new ConnexUtils(connex);
 
+  // Create a reference to the `VTHO` contract.
+  const vtho = connexUtils.getContract(
+    vthoArtifact.abi as AbiItem[],
+    networkConfig.vtho,
+  );
+
+  // Create a reference to the `Trader` contract.
+  const trader = connexUtils.getContract(
+    traderArtifact.abi as AbiItem[],
+    networkConfig.trader,
+  );
+
   // Get latest block number internal DB.
   let lastBlockNumber = await getHead() || 0;
 
@@ -46,11 +61,14 @@ app.listen(process.env.PORT || 5000, async function () {
     try {
       const range = {from: lastBlockNumber, to: curBlockNumber};
 
-      const approvals = await fetchApprovals(connexUtils, range)
+      const approvals = await fetchApprovals(vtho, range)
       console.log({approvals: JSON.stringify(approvals, null)});
 
-      const configs = await fetchConfigs(connexUtils, range)
+      const configs = await fetchConfigs(trader, range)
       console.log({configs: JSON.stringify(configs, null)});
+
+      const swaps = await fetchSwaps(trader, range)
+      console.log({swaps: JSON.stringify(swaps, null)});
 
       lastBlockNumber = curBlockNumber;
       // TODO: store block number in DB.
