@@ -1,13 +1,14 @@
 import type { Contract } from '../blockchain/connex-utils'
-import {getNetworkConfig} from '../config/index';
+import type { NetworkConfig } from '../config/index';
 import { fetchEvents } from './fetch-events';
-
-const networkConfig = getNetworkConfig(100010); // testnet
+import type { Callback, Range } from './fetch-events';
 
 export async function fetchApprovals(
+  networkConfig: NetworkConfig,
   vtho: Contract,
-  range: { from: number, to: number },
-): Promise<Connex.Thor.Filter.Row<"event", Connex.Thor.Account.WithDecoded>[]> {
+  range: Range,
+  callback: Callback,
+): Promise<void> {
 
   // Fetch `Approval` events emitted by the `VTHO` contract.
   const filter = vtho.events.Approval
@@ -15,5 +16,5 @@ export async function fetchApprovals(
     .order("asc")
     .range({unit: "block", ...range})
 
-  return fetchEvents(filter)
+  await fetchEvents(filter, callback)
 }

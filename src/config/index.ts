@@ -75,9 +75,9 @@ import { Address } from "../typings/types";
  */
  export const CORS = ["https://main--symphonious-macaron-41163f.netlify.app"];
 
- type DexName = "verocket" | "vexchange"
+export type DexName = "verocket" | "vexchange"
 
- type Dex = {
+export type Dex = {
    /** DEX name. */
    name: DexName;
    /** UniV2 router contract address. */
@@ -86,7 +86,7 @@ import { Address } from "../typings/types";
    pairVVET_VTHO: Address;
  }
 
- type NetworkConfig = {
+export type NetworkConfig = {
    /** Network name. */
    name: string;
    /** Vechain RPC endpoint. */
@@ -101,7 +101,7 @@ import { Address } from "../typings/types";
    trader: Address;
  }
 
- type ChainId = 100010 | 100009
+export type ChainId = 100010 | 100009
 
  const networkConfig: Record<ChainId, NetworkConfig> = {
    100009: {

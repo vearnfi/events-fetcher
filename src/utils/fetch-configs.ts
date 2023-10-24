@@ -1,10 +1,12 @@
 import type {Contract } from '../blockchain/connex-utils'
 import { fetchEvents } from './fetch-events';
+import type { Callback, Range } from './fetch-events';
 
 export async function fetchConfigs(
   trader: Contract,
-  range: { from: number, to: number },
-): Promise<Connex.Thor.Filter.Row<"event", Connex.Thor.Account.WithDecoded>[]> {
+  range: Range,
+  callback: Callback,
+): Promise<void> {
 
   // Fetch `Config` events emitted by the `Trader` contract.
   const filter = trader.events.Config
@@ -12,5 +14,5 @@ export async function fetchConfigs(
     .order("asc")
     .range({unit: "block", ...range})
 
-  return fetchEvents(filter)
+  await fetchEvents(filter, callback)
 }

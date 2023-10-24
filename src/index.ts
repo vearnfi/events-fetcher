@@ -19,9 +19,6 @@ app.use(cors());
 
 const networkConfig = getNetworkConfig(100010); // testnet
 
-  //Run server in https://localhost:5000
-app.listen(process.env.PORT || 5000, async function () {
-
 
   const getHead = async () => {
     try {
@@ -32,11 +29,14 @@ app.listen(process.env.PORT || 5000, async function () {
     }
   }
 
-  // Blockchain connection.
+async function main() {
+  // Establish connection.
   const net = new SimpleNet(networkConfig.rpc)
   const driver = await Driver.connect(net);
   const connex = new Framework(driver);
   const connexUtils = new ConnexUtils(connex);
+
+  // TODO: check blockchain connection.
 
   // Create a reference to the `VTHO` contract.
   const vtho = connexUtils.getContract(
@@ -55,33 +55,68 @@ app.listen(process.env.PORT || 5000, async function () {
 
   // Endless loop for fetching events from the chain.
   for (;;) {
-    const block = await connexUtils.getCurrentBlock();
-    const curBlockNumber = block.number;
-    console.log({curBlockNumber})
+    const currentBlock = await connexUtils.getCurrentBlock();
+    console.log({curBlockNumber: currentBlock.number})
     try {
-      const range = {from: lastBlockNumber, to: curBlockNumber};
+      // TODO: what happens if lastBlockNumber < currentBlock.number
+      const range = {from: lastBlockNumber, to: currentBlock.number};
 
-      const approvals = await fetchApprovals(vtho, range)
-      console.log({approvals: JSON.stringify(approvals, null)});
+      await fetchApprovals(networkConfig, vtho, range, async function(events) {
+        console.log({approvals: JSON.stringify(events, null)});
+        // TODO: call add event endpoint
+        const response = await fetch('http://127.0.0.1:5001/vefarmdev/us-central1/registerevents?eventType=APPROVAL', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(events),
+        });
+        const body = await response.text();
+        console.log(body);
+      })
 
-      const configs = await fetchConfigs(trader, range)
-      console.log({configs: JSON.stringify(configs, null)});
+      await fetchConfigs(trader, range, async function(events) {
+        console.log({configs: JSON.stringify(events, null)});
+        // TODO: call add event endpoint
+        const response = await fetch('http://127.0.0.1:5001/vefarmdev/us-central1/registerevents?eventType=CONFIG', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(events),
+        });
+        const body = await response.text();
+        console.log(body);
+      })
 
-      const swaps = await fetchSwaps(trader, range)
-      console.log({swaps: JSON.stringify(swaps, null)});
+      await fetchSwaps(trader, range, async function(events) {
+        console.log({swaps: JSON.stringify(events, null)});
+        // TODO: call add event endpoint
+        const response = await fetch('http://127.0.0.1:5001/vefarmdev/us-central1/registerevents?eventType=SWAP', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(events),
+        });
+        const body = await response.text();
+        console.log(body);
+      })
 
-      lastBlockNumber = curBlockNumber;
+      lastBlockNumber = currentBlock.number;
       // TODO: store block number in DB.
     } catch (error) {
-      console.error("Event Fetching error" + error);
+      console.error("ERROR fetching events " + error);
     }
 
-    // Sleep for 10 secs (1 block).
+    // Sleep for 10 seconds (1 block).
     await new Promise((resolve) => {
       setTimeout(resolve, 10_000)
     })
   }
-});
+}
+
+app.listen(process.env.PORT || 5000, main)
 
 //----------------------------
 // const { Framework } = require('@vechain/connex-framework');
