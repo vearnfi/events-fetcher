@@ -1,73 +1,3 @@
-// export const SC_ADDRESS = '0xC8e27e7CC8EC21A0CE6921148Ab2EcC9E3536233';  //Testnet MP Address
-// export const SC_ABI = [
-//     {
-//         "anonymous": false,
-//         "inputs": [
-//             {
-//                 "indexed": true,
-//                 "internalType": "uint256",
-//                 "name": "tokenId",
-//                 "type": "uint256"
-//             },
-//             {
-//                 "indexed": true,
-//                 "internalType": "address",
-//                 "name": "lister",
-//                 "type": "address"
-//             },
-//             {
-//                 "components": [
-//                     {
-//                         "internalType": "address",
-//                         "name": "tokenOwner",
-//                         "type": "address"
-//                     },
-//                     {
-//                         "internalType": "uint256",
-//                         "name": "itemId",
-//                         "type": "uint256"
-//                     },
-//                     {
-//                         "internalType": "uint256",
-//                         "name": "tokenId",
-//                         "type": "uint256"
-//                     },
-//                     {
-//                         "internalType": "uint256",
-//                         "name": "startTime",
-//                         "type": "uint256"
-//                     },
-//                     {
-//                         "internalType": "uint256",
-//                         "name": "endTime",
-//                         "type": "uint256"
-//                     },
-//                     {
-//                         "internalType": "uint256",
-//                         "name": "reserveTokenPrice",
-//                         "type": "uint256"
-//                     },
-//                     {
-//                         "internalType": "uint256",
-//                         "name": "buyoutTokenPrice",
-//                         "type": "uint256"
-//                     },
-//                     {
-//                         "internalType": "enum IMarketplace.ListingType",
-//                         "name": "listingType",
-//                         "type": "uint8"
-//                     }
-//                 ],
-//                 "indexed": false,
-//                 "internalType": "struct IMarketplace.MarketItem",
-//                 "name": "newItem",
-//                 "type": "tuple"
-//             }
-//         ],
-//         "name": "EventName",
-//         "type": "event"
-//     }
-// ]
 import { Address } from "../typings/types";
 
 /**
@@ -103,6 +33,8 @@ export type NetworkConfig = {
    registerEventsEndpoint: string;
    /** Endpoint to fetch lastest block number. */
    getHeadEndpoint: string;
+   /** Endpoint for setting lastest block number. */
+   setHeadEndpoint: string;
  }
 
 export type ChainId = 100010 | 100009
@@ -127,6 +59,7 @@ export type ChainId = 100010 | 100009
      ],
      trader: "0x0000000000000000000000000000000000000000", // TODO
      getHeadEndpoint: "https://",
+     setHeadEndpoint: "https://",
      registerEventsEndpoint: "https://",
    },
    100010: {
@@ -147,8 +80,9 @@ export type ChainId = 100010 | 100009
        },
      ],
      trader: "0x0317B19b8b94aE1D5Bfb4727b9064fe8118aA305",
-     registerEventsEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/registerevents",
      getHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/gethead",
+     setHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/sethead",
+     registerEventsEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/registerevents",
    },
  };
 

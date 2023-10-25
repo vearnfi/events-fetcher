@@ -11,6 +11,7 @@ import * as vthoArtifact from "./abis/Energy.json";
 import * as traderArtifact from "./abis/Trader.json";
 import {AbiItem} from "./typings/types";
 import { getHead } from './utils/get-head';
+import { setHead } from './utils/set-head';
 import { fetchApprovals } from './utils/fetch-approvals';
 import { fetchConfigs } from './utils/fetch-configs';
 import { fetchSwaps } from './utils/fetch-swaps';
@@ -64,7 +65,11 @@ async function main() {
       await fetchSwaps(trader, range, registerEvents("SWAP"))
 
       lastBlockNumber = currentBlock.number;
-      // TODO: store block number in DB.
+
+      // Update lastBlockNumber once a day.
+      if (currentBlock.number % 6 * 60 * 24 === 0) {
+        await setHead(currentBlock.number)
+      }
     } catch (error) {
       console.error("ERROR fetching events " + error);
     }

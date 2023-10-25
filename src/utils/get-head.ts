@@ -5,8 +5,6 @@ const {CHAIN_ID} = getEnvVars();
 
 const networkConfig = getNetworkConfig(CHAIN_ID);
 
-console.log({networkConfig})
-
 export async function getHead(): Promise<number> {
   try {
     const response = await fetch(networkConfig.getHeadEndpoint);
