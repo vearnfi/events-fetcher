@@ -1,33 +1,28 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
 import { Framework } from '@vechain/connex-framework';
 import { Driver, SimpleNet, SimpleWallet } from '@vechain/connex-driver'
-import {ConnexUtils } from './blockchain/connex-utils'
 import {getNetworkConfig} from './config/index';
+import {getEnvVars} from './config/get-env-vars'
+import {ConnexUtils } from './blockchain/connex-utils'
 import * as vthoArtifact from "./abis/Energy.json";
 import * as traderArtifact from "./abis/Trader.json";
 import {AbiItem} from "./typings/types";
+import { getHead } from './utils/get-head';
 import { fetchApprovals } from './utils/fetch-approvals';
 import { fetchConfigs } from './utils/fetch-configs';
 import { fetchSwaps } from './utils/fetch-swaps';
+import { registerEvents } from './utils/register-events';
 
-import express from 'express';
-import cors from 'cors';
 
 const app = express();
 app.use(cors());
 
-// const {CHAIN_ID} = getEnvVars();
+const {CHAIN_ID} = getEnvVars();
 
-const networkConfig = getNetworkConfig(100010); // testnet
-
-
-  const getHead = async () => {
-    try {
-      //Find the latest event item and return its Block number from Internal DB
-      return 0;
-    } catch (error) {
-      console.error("GetHead Event Err: add event info", error);
-    }
-  }
+const networkConfig = getNetworkConfig(CHAIN_ID);
 
 async function main() {
   // Establish connection.
@@ -51,7 +46,8 @@ async function main() {
   );
 
   // Get latest block number internal DB.
-  let lastBlockNumber = await getHead() || 0;
+  let lastBlockNumber = await getHead();
+  console.log({lastBlockNumber})
 
   // Endless loop for fetching events from the chain.
   for (;;) {
@@ -61,47 +57,11 @@ async function main() {
       // TODO: what happens if lastBlockNumber < currentBlock.number
       const range = {from: lastBlockNumber, to: currentBlock.number};
 
-      await fetchApprovals(networkConfig, vtho, range, async function(events) {
-        console.log({approvals: JSON.stringify(events, null)});
-        // TODO: call add event endpoint
-        const response = await fetch('http://127.0.0.1:5001/vefarmdev/us-central1/registerevents?eventType=APPROVAL', {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(events),
-        });
-        const body = await response.text();
-        console.log(body);
-      })
+      await fetchApprovals(vtho, range, registerEvents("APPROVAL"))
 
-      await fetchConfigs(trader, range, async function(events) {
-        console.log({configs: JSON.stringify(events, null)});
-        // TODO: call add event endpoint
-        const response = await fetch('http://127.0.0.1:5001/vefarmdev/us-central1/registerevents?eventType=CONFIG', {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(events),
-        });
-        const body = await response.text();
-        console.log(body);
-      })
+      await fetchConfigs(trader, range, registerEvents("CONFIG"))
 
-      await fetchSwaps(trader, range, async function(events) {
-        console.log({swaps: JSON.stringify(events, null)});
-        // TODO: call add event endpoint
-        const response = await fetch('http://127.0.0.1:5001/vefarmdev/us-central1/registerevents?eventType=SWAP', {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(events),
-        });
-        const body = await response.text();
-        console.log(body);
-      })
+      await fetchSwaps(trader, range, registerEvents("SWAP"))
 
       lastBlockNumber = currentBlock.number;
       // TODO: store block number in DB.

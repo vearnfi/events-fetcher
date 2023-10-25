@@ -99,6 +99,10 @@ export type NetworkConfig = {
    dexs: Dex[];
    /** Trader contract address. */
    trader: Address;
+   /** Register events endpoint. */
+   registerEventsEndpoint: string;
+   /** Endpoint to fetch lastest block number. */
+   getHeadEndpoint: string;
  }
 
 export type ChainId = 100010 | 100009
@@ -122,6 +126,8 @@ export type ChainId = 100010 | 100009
        },
      ],
      trader: "0x0000000000000000000000000000000000000000", // TODO
+     getHeadEndpoint: "https://",
+     registerEventsEndpoint: "https://",
    },
    100010: {
      name: "testnet",
@@ -141,6 +147,8 @@ export type ChainId = 100010 | 100009
        },
      ],
      trader: "0x0317B19b8b94aE1D5Bfb4727b9064fe8118aA305",
+     registerEventsEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/registerevents",
+     getHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/gethead",
    },
  };
 

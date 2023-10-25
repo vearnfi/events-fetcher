@@ -1,10 +1,14 @@
 import type { Contract } from '../blockchain/connex-utils'
-import type { NetworkConfig } from '../config/index';
+import {getNetworkConfig} from '../config/index';
+import {getEnvVars} from '../config/get-env-vars'
 import { fetchEvents } from './fetch-events';
 import type { Callback, Range } from './fetch-events';
 
+const {CHAIN_ID} = getEnvVars();
+
+const networkConfig = getNetworkConfig(CHAIN_ID);
+
 export async function fetchApprovals(
-  networkConfig: NetworkConfig,
   vtho: Contract,
   range: Range,
   callback: Callback,
