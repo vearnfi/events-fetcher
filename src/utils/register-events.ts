@@ -15,6 +15,11 @@ const postOptions = {
 
 export type EventType = "APPROVAL" | "CONFIG" | "SWAP"
 
+/**
+ * Store events into DB via endpoint call.
+ * @param {EventType} eventType Event type.
+ * @return {(events: RawEvent[]) => Promise<void>} Event handler function.
+ */
 export function registerEvents(
   eventType: EventType,
 ): (events: RawEvent[]) => Promise<void> {
