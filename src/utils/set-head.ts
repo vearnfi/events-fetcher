@@ -12,14 +12,16 @@ const postOptions = {
   },
 }
 
+/**
+ * Store lastBlockNumber into DB via endpoint call.
+ * @param {number} lastBlockNumber Latest block number.
+ */
 export async function setHead(lastBlockNumber: number): Promise<void> {
-  console.log({setHead: lastBlockNumber})
-      const response = await fetch(networkConfig.setHeadEndpoint, {
-      ...postOptions,
-      body: JSON.stringify({lastBlockNumber}),
-    });
+  const response = await fetch(networkConfig.setHeadEndpoint, {
+    ...postOptions,
+    body: JSON.stringify({lastBlockNumber}),
+  });
 
-    const body = await response.text();
-
-    console.log(body);
+  const body = await response.text();
+  console.log(body);
 }

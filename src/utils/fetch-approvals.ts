@@ -8,6 +8,13 @@ const {CHAIN_ID} = getEnvVars();
 
 const networkConfig = getNetworkConfig(CHAIN_ID);
 
+/**
+ * Fetch Approval events from the VTHO contract and pass them
+ * to the callback function.
+ * @param {Contract} vtho VTHO contract.
+ * @param {Range} range Blocks from and to to filter events.
+ * @param {Callback} callback Callback function to process events.
+ */
 export async function fetchApprovals(
   vtho: Contract,
   range: Range,

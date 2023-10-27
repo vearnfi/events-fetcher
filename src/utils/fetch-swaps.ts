@@ -2,6 +2,13 @@ import type {Contract } from '../blockchain/connex-utils'
 import { fetchEvents } from './fetch-events';
 import type { Callback, Range } from './fetch-events';
 
+/**
+ * Fetch Swap events from the Trader contract and pass them
+ * to the callback function.
+ * @param {Contract} trader Trader contract.
+ * @param {Range} range Blocks from and to to filter events.
+ * @param {Callback} callback Callback function to process events.
+ */
 export async function fetchSwaps(
   trader: Contract,
   range: Range,
