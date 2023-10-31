@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
+import {getEnvVars} from "./config/get-env-vars"
 import {connect} from "./utils/connect"
 import { getHead } from './utils/get-head';
 import { setHead } from './utils/set-head';
@@ -12,6 +13,8 @@ import { registerEvents } from './utils/register-events';
 
 const app = express();
 app.use(cors());
+
+const {CHAIN_ID} = getEnvVars();
 
 async function main() {
   const connection = await connect();
@@ -29,6 +32,7 @@ async function main() {
   for (;;) {
     try {
       const currentBlock = await connexUtils.getCurrentBlock();
+      console.log(`Block number: ${currentBlock.number}`)
       // TODO: what happens if lastBlockNumber < currentBlock.number
       const range = {from: lastBlockNumber, to: currentBlock.number};
 
@@ -46,6 +50,7 @@ async function main() {
       }
     } catch (error) {
       console.error("ERROR fetching events " + error);
+      console.error("CHAIN_ID" + CHAIN_ID);
     }
 
     // Sleep for 10 seconds (1 block).

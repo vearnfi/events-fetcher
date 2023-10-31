@@ -80,9 +80,12 @@ export type ChainId = 100010 | 100009
        },
      ],
      trader: "0x0317B19b8b94aE1D5Bfb4727b9064fe8118aA305",
-     getHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/gethead",
-     setHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/sethead",
-     registerEventsEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/registerevents",
+     getHeadEndpoint: "https://gethead-3co32ksh6a-uc.a.run.app",
+     setHeadEndpoint: "https://sethead-3co32ksh6a-uc.a.run.app",
+     registerEventsEndpoint: "https://registerevents-3co32ksh6a-uc.a.run.app",
+    //  getHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/gethead",
+    //  setHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/sethead",
+    //  registerEventsEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/registerevents",
    },
  };
 

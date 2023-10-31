@@ -8,7 +8,8 @@
     "dev": "nodemon ./src/index.ts",
     "build": "npx tsc",
     "start": "node ./dist/index.js",
-    "test": "npm run test"
+    "test": "npm run test",
+    "logs": "gcloud app logs tail -s default"
   },
   "keywords": [
     "VeChain",
