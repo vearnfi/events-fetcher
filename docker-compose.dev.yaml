@@ -5,8 +5,6 @@ services:
     build:
       # ^ Build the container based on the provided image (path to Dockerfile)
       target: base
-      args:
-        - NODE_ENV=development
     volumes:
       - ./src:/app/src:ro
       # - /app/node_modules

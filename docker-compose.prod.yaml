@@ -4,8 +4,6 @@ services:
   connex-fetcher:
     build:
       target: production
-      args:
-        - NODE_ENV=production
     environment:
       - NODE_ENV=production
       - CHAIN_ID=100009
