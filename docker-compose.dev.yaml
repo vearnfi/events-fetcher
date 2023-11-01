@@ -3,7 +3,6 @@ version: "3.7"
 services:
   connex-fetcher:
     build:
-      # ^ Build the container based on the provided image (path to Dockerfile)
       target: base
     volumes:
       - ./src:/app/src:ro
