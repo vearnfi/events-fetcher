@@ -1,10 +1,15 @@
 # Development environment configuration. Extends base configuration.
-version: "3"
+version: "3.7"
 services:
   connex-fetcher:
+    build:
+      # ^ Build the container based on the provided image (path to Dockerfile)
+      target: base
+      args:
+        - NODE_ENV=development
     volumes:
-      - ./:/app:ro
-      - /app/node_modules
+      - ./src:/app/src:ro
+      # - /app/node_modules
       # ^ Only required in dev mode to sync code changes
     environment:
       - NODE_ENV=development

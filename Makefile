@@ -1,10 +1,10 @@
-up-dev:
+dev-up:
 		docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up
 
-up-stag:
+stag-up:
 		docker-compose -f docker-compose.yaml -f docker-compose.stag.yaml up
 
-up-prod:
+prod-up:
 		docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up
 
 down:

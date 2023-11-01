@@ -1,8 +1,12 @@
 # Development production configuration. Extends base configuration.
-version: "3"
+version: "3.7"
 services:
   connex-fetcher:
+    build:
+      target: production
+      args:
+        - NODE_ENV=production
     environment:
       - NODE_ENV=production
       - CHAIN_ID=100009
-    command: npm run build && npm run start
+    command: node dist/index.js

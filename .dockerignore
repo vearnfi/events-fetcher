@@ -6,3 +6,4 @@ Dockerfile
 .git
 .gitignore
 app.yaml
+docker-compose*

@@ -1,10 +1,11 @@
 # Shared configuration across environments.
-version: "3"
+version: "3.7"
 services:
   # ^ List of containers
   connex-fetcher:
     # ^ Container name
-    build: .
-      # ^ Build the container based on the provided image (path to Dockerfile)
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - PORT=5000
