@@ -3,7 +3,7 @@ version: "3.7"
 services:
   connex-fetcher:
     build:
-      target: base
+      target: builder
     volumes:
       - ./src:/app/src:ro
       # - /app/node_modules
