@@ -1,0 +1,8 @@
+# Development production configuration. Extends base configuration.
+version: "3"
+services:
+  connex-fetcher:
+    environment:
+      - NODE_ENV=production
+      - CHAIN_ID=100009
+    command: npm run build && npm run start

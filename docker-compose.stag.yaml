@@ -1,0 +1,8 @@
+# Development staging configuration. Extends base configuration.
+version: "3"
+services:
+  connex-fetcher:
+    environment:
+      - NODE_ENV=production
+      - CHAIN_ID=100010
+    command: npm run start

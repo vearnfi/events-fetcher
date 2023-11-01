@@ -1,3 +1,4 @@
+# Shared configuration across environments.
 version: "3"
 services:
   # ^ List of containers
@@ -5,10 +6,5 @@ services:
     # ^ Container name
     build: .
       # ^ Build the container based on the provided image (path to Dockerfile)
-    volumes:
-      - ./:/app:ro
-      - /app/node_modules
     environment:
-      - CHAIN_ID=100010
-      # ^ TODO: use one docker-compose per env
-    network_mode: "host"
+      - PORT=5000

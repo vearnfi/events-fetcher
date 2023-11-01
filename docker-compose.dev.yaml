@@ -1,0 +1,13 @@
+# Development environment configuration. Extends base configuration.
+version: "3"
+services:
+  connex-fetcher:
+    volumes:
+      - ./:/app:ro
+      - /app/node_modules
+      # ^ Only required in dev mode to sync code changes
+    environment:
+      - NODE_ENV=development
+      - CHAIN_ID=100011
+    network_mode: "host"
+    command: npm run dev

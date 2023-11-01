@@ -18,11 +18,11 @@ EXPOSE 5000
 
 #ENV NODE_PATH=./dist
 
-# RUN npm run build
+RUN npm run build
 
 # CMD ["node", "./dist/index.js"]
 # ^ This runs once the container is deployed (runtime)
 # ^ Production config
 
-CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "dev"]
 # ^ Development config
