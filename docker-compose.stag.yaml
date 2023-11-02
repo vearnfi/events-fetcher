@@ -1,0 +1,10 @@
+# Development staging configuration. Extends base configuration.
+version: "3.7"
+services:
+  connex-fetcher:
+    build:
+      target: production
+    environment:
+      - NODE_ENV=production
+      - CHAIN_ID=100010
+    command: node dist/index.js

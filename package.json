@@ -1,23 +1,17 @@
 {
-  "name": "connex-sync-event-fetch",
+  "name": "vefarm-events-fetcher",
   "version": "1.0.0",
-  "description": "Fetch the events from the Smart Contract in Backend synchronously.",
+  "description": "Fetch and forward events associated to the VeFarm protocol.",
   "main": "index.js",
   "node": 18,
   "scripts": {
     "dev": "nodemon ./src/index.ts",
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node ./dist/index.js",
-    "test": "npm run test"
+    "test": "npm run test",
+    "logs": "gcloud app logs tail -s default"
   },
-  "keywords": [
-    "VeChain",
-    "Connex",
-    "Event",
-    "Fetch",
-    "Sync"
-  ],
-  "author": "Adam",
+  "author": "federodes",
   "license": "ISC",
   "dependencies": {
     "@vechain/connex-driver": "^2.0.10",
@@ -33,7 +27,6 @@
     "@types/express": "^4.17.20",
     "@types/node": "^20.8.8",
     "nodemon": "^3.0.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "ts-node": "^10.9.1"
   }
 }

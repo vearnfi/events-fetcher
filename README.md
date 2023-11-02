@@ -12,7 +12,7 @@ This module implements the following logic to update the attribute of metadata i
 3. In the loop, following logic is required.
     - Filter the events from the Chain with "from" and "to" parameters using connex.
     - Get the events within the range of "from" block and "to" block. Refer to the code in index.js.
-    - Then loop the gained events array and use conditions to find a specific event occured. 
+    - Then loop the gained events array and use conditions to find a specific event occured.
     - Set custom delay of repeated loop.
 
 ## Packages
@@ -38,7 +38,7 @@ const driver = await Driver.connect(net, wallet);
 const connex = new Framework(driver)
 
 // Get latest Block number in the Internal DB
-let latestBlocknumber = await getHead(); 
+let latestBlocknumber = await getHead();
 
 for(;;){
     await new Promise(async (resolve,reject)=>{
@@ -90,7 +90,7 @@ for(;;){
 
     var myBackend = require('connex-sync-event-fetch');
     myBackend.syncBackend();
-    
+
     ```
 
 
@@ -105,3 +105,16 @@ Insert your Smart Contract Address and ABI, Insert your logic to get events.
 This package is licensed under the
 [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.html), also included
 in *LICENSE* file in the repository.
+
+
+## Google Cloud Deploy
+
+```
+gcloud app deploy
+```
+
+## Google Cloud Engine Logs
+
+```
+gcloud app logs tail -s default
+```

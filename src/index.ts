@@ -29,6 +29,7 @@ async function main() {
   for (;;) {
     try {
       const currentBlock = await connexUtils.getCurrentBlock();
+      console.log(`Block number: ${currentBlock.number}`)
       // TODO: what happens if lastBlockNumber < currentBlock.number
       const range = {from: lastBlockNumber, to: currentBlock.number};
 

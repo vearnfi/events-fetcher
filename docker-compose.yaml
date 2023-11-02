@@ -1,0 +1,12 @@
+# Shared configuration across environments.
+version: "3.7"
+services:
+  # ^ List of containers
+  connex-fetcher:
+    # ^ Container name
+    build:
+      context: .
+      dockerfile: Dockerfile
+      image: federodes/events-fetcher
+    environment:
+      - PORT=5000

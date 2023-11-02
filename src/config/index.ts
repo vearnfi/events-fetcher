@@ -37,7 +37,8 @@ export type NetworkConfig = {
    setHeadEndpoint: string;
  }
 
-export type ChainId = 100010 | 100009
+export type ChainId =  100009 | 100010 | 100011
+// ^ 100009 = production, 100010 = staging, 100011 = development
 
  const networkConfig: Record<ChainId, NetworkConfig> = {
    100009: {
@@ -63,6 +64,28 @@ export type ChainId = 100010 | 100009
      registerEventsEndpoint: "https://",
    },
    100010: {
+     name: "testnet",
+     rpc: "https://testnet.veblocks.net/",
+     vtho: "0x0000000000000000000000000000456E65726779", // token0
+     vvet: "0x86fb5343bbecffc86185c023a2a6ccc76fc0afd8", // token1
+     dexs: [
+       {
+         name: "verocket",
+         routerV2: "0x91e42759290239a62ac757cf85bb5b74ace57927",
+         pairVVET_VTHO: "0x1e5e9a6540b15a3efa8d4e8fadb82cc8e0e167ca",
+       },
+       {
+         name: "vexchange",
+         routerV2: "0x01d6b50b31c18d7f81ede43935cadf79901b0ea0",
+         pairVVET_VTHO: "0x0000000000000000000000000000000000000000",
+       },
+     ],
+     trader: "0x0317B19b8b94aE1D5Bfb4727b9064fe8118aA305",
+     getHeadEndpoint: "https://gethead-3co32ksh6a-uc.a.run.app",
+     setHeadEndpoint: "https://sethead-3co32ksh6a-uc.a.run.app",
+     registerEventsEndpoint: "https://registerevents-3co32ksh6a-uc.a.run.app",
+   },
+   100011: {
      name: "testnet",
      rpc: "https://testnet.veblocks.net/",
      vtho: "0x0000000000000000000000000000456E65726779", // token0
