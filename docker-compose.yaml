@@ -7,5 +7,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      image: federodes/events-fetcher
     environment:
       - PORT=5000

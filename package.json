@@ -11,14 +11,7 @@
     "test": "npm run test",
     "logs": "gcloud app logs tail -s default"
   },
-  "keywords": [
-    "VeChain",
-    "Connex",
-    "Event",
-    "Fetch",
-    "Sync"
-  ],
-  "author": "Adam",
+  "author": "federodes",
   "license": "ISC",
   "dependencies": {
     "@vechain/connex-driver": "^2.0.10",
