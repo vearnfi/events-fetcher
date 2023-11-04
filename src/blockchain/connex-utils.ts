@@ -20,6 +20,7 @@ export type Contract = {
  * Utility functions built around the connex library.
  * @todo Create an npm package so that we can reuse this logic
  * in both client and server.
+ * @todo Rename to WConnex (WrappedConnex)
  */
 export class ConnexUtils {
   /**
@@ -155,6 +156,14 @@ export class ConnexUtils {
         return receipt;
       }
     }
+  }
+
+  /**
+   * Return thor ticker to track when new blocks are added to the chain.
+   * @return {Connex.Thor.Ticker}
+   */
+  ticker(): Connex.Thor.Ticker {
+    return this.connex.thor.ticker();
   }
 
   /**

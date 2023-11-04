@@ -1,6 +1,6 @@
 import {getNetworkConfig} from '../config/index';
 import {getEnvVars} from '../config/get-env-vars'
-import type {RawEvent} from "../typings/types"
+import type {RawEvent, EventType} from "../typings/types"
 
 const {CHAIN_ID} = getEnvVars();
 
@@ -13,19 +13,15 @@ const postOptions = {
   },
 }
 
-export type EventType = "APPROVAL" | "CONFIG" | "SWAP"
-
 /**
  * Store events into DB via endpoint call.
  * @param {EventType} eventType Event type.
- * @return {(events: RawEvent[]) => Promise<void>} Event handler function.
+ * @return {string} Response.
  */
-export function registerEvents(
+export async function forwardEvents(
   eventType: EventType,
-): (events: RawEvent[]) => Promise<void> {
-  return async function(events: RawEvent[]): Promise<void> {
-    console.log({events: JSON.stringify(events, null)});
-
+  events: RawEvent[],
+): Promise<string> {
     const url = `${networkConfig.registerEventsEndpoint}?eventType=${eventType}`
 
     const response = await fetch(url, {
@@ -33,8 +29,5 @@ export function registerEvents(
       body: JSON.stringify(events),
     });
 
-    const body = await response.text();
-
-    console.log(body);
+    return response.text();
   }
-}
