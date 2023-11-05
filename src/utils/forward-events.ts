@@ -14,7 +14,7 @@ const postOptions = {
 }
 
 /**
- * Store events into DB via endpoint call.
+ * Forward events via endpoint call to consumer service.
  * @param {EventType} eventType Event type.
  * @return {string} Response.
  */

@@ -37,9 +37,10 @@ async function main() {
     "SWAP": trader.events.Swap.filter([{}]),
   }
 
-  // Get last inspected block.
+  // Get last inspected block from consumer service.
   let lastBlockNumber = await getHead();
 
+  // Listen to new blocks being inserted into the blockchain.
   const ticker = connexUtils.ticker();
 
   for (;;) {

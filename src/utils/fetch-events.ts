@@ -4,7 +4,7 @@ export type Callback = (events: Connex.Thor.Filter.Row<"event", Connex.Thor.Acco
 
 /**
  * Fetch events in batches by applying the given filter.
- * Pass resulting events back via callback.
+ * Pass resulting events up via callback.
  * @param {Filter} filter Filter.
  * @param {Callback} callback Callback function to handle events.
  * @param {number} limit Limit / batch size.

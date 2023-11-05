@@ -22,7 +22,6 @@ const {CHAIN_ID} = getEnvVars();
 
 const networkConfig = getNetworkConfig(CHAIN_ID);
 
-// TODO: return undefined or connection error?
 export async function connect(): Promise<Connection | undefined> {
   try {
     const net = new SimpleNet(networkConfig.rpc)
@@ -49,7 +48,6 @@ export async function connect(): Promise<Connection | undefined> {
       trader,
     };
   } catch (error) {
-    console.log("ERROR while establishing connection " + error);
     return;
   }
 }
