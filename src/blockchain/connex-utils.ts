@@ -1,4 +1,4 @@
-import type {Framework} from "@vechain/connex-framework";
+// import type {Framework} from "@vechain/connex-framework";
 // import bn from "bignumber.js";
 // import type {BigNumber} from "bignumber.js";
 // import {Transaction} from "thor-devkit";
@@ -26,7 +26,7 @@ export class ConnexUtils {
   /**
    * Creates ConnexUtils instance given a connex connection.
    */
-  constructor(private readonly connex: Framework) {}
+  constructor(private readonly connex: Connex) {}
 
   /**
    * Implements constant method.
@@ -169,6 +169,7 @@ export class ConnexUtils {
   /**
    * Return current block.
    * @return {Promise<Connex.Thor.Block>} Current block.
+   * @throws When current block is undefined.
    */
   async getCurrentBlock(): Promise<Connex.Thor.Block> {
     const currentBlock = await this.connex.thor.block().get();
