@@ -2,57 +2,71 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
-import {connect} from "./utils/connect"
+import { EVENT_TYPES, EventType, Filter } from './typings/types';
+import { connect } from "./utils/connect"
 import { getHead } from './utils/get-head';
-import { setHead } from './utils/set-head';
-import { fetchApprovals } from './utils/fetch-approvals';
-import { fetchConfigs } from './utils/fetch-configs';
-import { fetchSwaps } from './utils/fetch-swaps';
-import { registerEvents } from './utils/register-events';
+import { forwardEvents } from './utils/forward-events';
+import { fetchEvents } from './utils/fetch-events';
 
 const app = express();
 app.use(cors());
 
+/**
+ * Infinite loop for fetching and forwarding events to
+ * the consumer service.
+ */
 async function main() {
   const connection = await connect();
 
   if (connection == null) {
-    console.log('No connection')
+    console.error('No connection')
     return;
   }
 
-  const {connexUtils, vtho, trader} = connection
+  const {
+    networkConfig,
+    connexUtils,
+    vtho,
+    trader,
+  } = connection
 
+  // List of filters based on event type.
+  const filters: Record<EventType, Filter> = {
+    "APPROVAL": vtho.events.Approval.filter([{_spender: networkConfig.trader}]),
+    "CONFIG": trader.events.Config.filter([{}]),
+    "SWAP": trader.events.Swap.filter([{}]),
+  }
+
+  // Get last inspected block from consumer service.
   let lastBlockNumber = await getHead();
 
-  // Endless loop for fetching events from the chain and store them in the DB.
+  // Listen to new blocks being inserted into the blockchain.
+  const ticker = connexUtils.ticker();
+
   for (;;) {
     try {
-      const currentBlock = await connexUtils.getCurrentBlock();
+      const currentBlock = await ticker.next();
+
       console.log(`Block number: ${currentBlock.number}`)
-      // TODO: what happens if lastBlockNumber < currentBlock.number
-      const range = {from: lastBlockNumber, to: currentBlock.number};
 
-      await fetchApprovals(vtho, range, registerEvents("APPROVAL"))
+      for (const eventType of EVENT_TYPES) {
+        const filter = filters[eventType]
+          .order("asc")
+          .range({
+            unit: "block",
+            from: lastBlockNumber,
+            to: currentBlock.number,
+          })
 
-      await fetchConfigs(trader, range, registerEvents("CONFIG"))
-
-      await fetchSwaps(trader, range, registerEvents("SWAP"))
+          await fetchEvents(filter, async (events) => {
+            await forwardEvents(eventType, events)
+          })
+      }
 
       lastBlockNumber = currentBlock.number;
-
-      // Update lastBlockNumber once a day.
-      if (currentBlock.number % 6 * 60 * 24 === 0) {
-        await setHead(currentBlock.number)
-      }
     } catch (error) {
       console.error("ERROR fetching events " + error);
     }
-
-    // Sleep for 10 seconds (1 block).
-    await new Promise((resolve) => {
-      setTimeout(resolve, 10_000)
-    })
   }
 }
 

@@ -118,3 +118,12 @@ gcloud app deploy
 ```
 gcloud app logs tail -s default
 ```
+
+## Deploy to production server
+
+1. Clone repo
+2. Login into docker hub
+3. Create container from image:
+```
+docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml up -d
+```

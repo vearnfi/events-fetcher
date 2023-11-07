@@ -1,4 +1,4 @@
-import type {Framework} from "@vechain/connex-framework";
+// import type {Framework} from "@vechain/connex-framework";
 // import bn from "bignumber.js";
 // import type {BigNumber} from "bignumber.js";
 // import {Transaction} from "thor-devkit";
@@ -20,12 +20,13 @@ export type Contract = {
  * Utility functions built around the connex library.
  * @todo Create an npm package so that we can reuse this logic
  * in both client and server.
+ * @todo Rename to WConnex (WrappedConnex)
  */
 export class ConnexUtils {
   /**
    * Creates ConnexUtils instance given a connex connection.
    */
-  constructor(private readonly connex: Framework) {}
+  constructor(private readonly connex: Connex) {}
 
   /**
    * Implements constant method.
@@ -158,8 +159,17 @@ export class ConnexUtils {
   }
 
   /**
+   * Return thor ticker to track when new blocks are added to the chain.
+   * @return {Connex.Thor.Ticker}
+   */
+  ticker(): Connex.Thor.Ticker {
+    return this.connex.thor.ticker();
+  }
+
+  /**
    * Return current block.
    * @return {Promise<Connex.Thor.Block>} Current block.
+   * @throws When current block is undefined.
    */
   async getCurrentBlock(): Promise<Connex.Thor.Block> {
     const currentBlock = await this.connex.thor.block().get();

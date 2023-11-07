@@ -1,6 +1,7 @@
 import { Framework } from '@vechain/connex-framework';
 import { Driver, SimpleNet } from '@vechain/connex-driver'
-import {getNetworkConfig} from '../config/index';
+import {getNetworkConfig } from '../config/index';
+import type { NetworkConfig} from '../config/index';
 import {getEnvVars} from '../config/get-env-vars'
 import {ConnexUtils } from '../blockchain/connex-utils'
 import type {Contract } from '../blockchain/connex-utils'
@@ -8,7 +9,8 @@ import * as vthoArtifact from "../abis/Energy.json";
 import * as traderArtifact from "../abis/Trader.json";
 import {AbiItem} from "../typings/types";
 
-type Connection = {
+export type Connection = {
+  networkConfig: NetworkConfig,
   connexUtils: ConnexUtils,
   /** Reference to the VTHO contract. */
   vtho: Contract,
@@ -16,13 +18,12 @@ type Connection = {
   trader: Contract,
 }
 
-// TODO: return undefined or connection error?
+const {CHAIN_ID} = getEnvVars();
+
+const networkConfig = getNetworkConfig(CHAIN_ID);
+
 export async function connect(): Promise<Connection | undefined> {
   try {
-    const {CHAIN_ID} = getEnvVars();
-
-    const networkConfig = getNetworkConfig(CHAIN_ID);
-
     const net = new SimpleNet(networkConfig.rpc)
     const driver = await Driver.connect(net);
     const connex = new Framework(driver);
@@ -41,12 +42,12 @@ export async function connect(): Promise<Connection | undefined> {
     );
 
     return {
+      networkConfig,
       connexUtils,
       vtho,
       trader,
     };
   } catch (error) {
-    console.log("ERROR while establishing connection " + error);
     return;
   }
 }

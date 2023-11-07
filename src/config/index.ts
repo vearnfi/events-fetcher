@@ -33,8 +33,6 @@ export type NetworkConfig = {
    registerEventsEndpoint: string;
    /** Endpoint to fetch lastest block number. */
    getHeadEndpoint: string;
-   /** Endpoint for setting lastest block number. */
-   setHeadEndpoint: string;
  }
 
 export type ChainId =  100009 | 100010 | 100011
@@ -60,7 +58,6 @@ export type ChainId =  100009 | 100010 | 100011
      ],
      trader: "0x0000000000000000000000000000000000000000", // TODO
      getHeadEndpoint: "https://",
-     setHeadEndpoint: "https://",
      registerEventsEndpoint: "https://",
    },
    100010: {
@@ -82,7 +79,6 @@ export type ChainId =  100009 | 100010 | 100011
      ],
      trader: "0x0317B19b8b94aE1D5Bfb4727b9064fe8118aA305",
      getHeadEndpoint: "https://gethead-3co32ksh6a-uc.a.run.app",
-     setHeadEndpoint: "https://sethead-3co32ksh6a-uc.a.run.app",
      registerEventsEndpoint: "https://registerevents-3co32ksh6a-uc.a.run.app",
    },
    100011: {
@@ -104,7 +100,6 @@ export type ChainId =  100009 | 100010 | 100011
      ],
      trader: "0x0317B19b8b94aE1D5Bfb4727b9064fe8118aA305",
      getHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/gethead",
-     setHeadEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/sethead",
      registerEventsEndpoint: "http://127.0.0.1:5001/vefarmdev/us-central1/registerevents",
    },
  };
