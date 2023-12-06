@@ -121,6 +121,12 @@ gcloud app logs tail -s default
 
 ## Deploy to production server
 
+1. Create image in local computer and push it to docker hub
+```
+
+docker push
+```
+2. ssh into server
 1. Clone repo
 2. Login into docker hub
 3. Create container from image:

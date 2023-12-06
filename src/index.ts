@@ -30,14 +30,14 @@ async function main() {
     trader,
   } = connection
 
-  // List of filters based on event type.
+  // Defining filters for each event type.
   const filters: Record<EventType, Filter> = {
     "APPROVAL": vtho.events.Approval.filter([{_spender: networkConfig.trader}]),
     "CONFIG": trader.events.Config.filter([{}]),
     "SWAP": trader.events.Swap.filter([{}]),
   }
 
-  // Get last inspected block from consumer service.
+  // Get last inspected block from remote service.
   let lastBlockNumber = await getHead();
 
   // Listen to new blocks being inserted into the blockchain.
@@ -49,6 +49,7 @@ async function main() {
 
       console.log(`Block number: ${currentBlock.number}`)
 
+      // Fetch events and forward them to the remote service.
       for (const eventType of EVENT_TYPES) {
         const filter = filters[eventType]
           .order("asc")
