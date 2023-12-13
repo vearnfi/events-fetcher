@@ -1,5 +1,3 @@
-import type {ChainId} from './index';
-
 /**
  * Utility function to read and validate environment variables.
  * @return {{
@@ -7,7 +5,7 @@ import type {ChainId} from './index';
  * }} Environment variables
  */
 export function getEnvVars() {
-  const CHAIN_ID = process.env.CHAIN_ID as unknown as ChainId;
+  const CHAIN_ID = process.env.CHAIN_ID;
 
   if (CHAIN_ID == null) {
     throw new Error("Missing env var CHAIN_ID");

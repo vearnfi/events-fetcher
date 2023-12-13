@@ -13,7 +13,7 @@ app.use(cors());
 
 /**
  * Infinite loop for fetching and forwarding events to
- * the consumer service.
+ * the remote service.
  */
 async function main() {
   const connection = await connect();
@@ -24,32 +24,37 @@ async function main() {
   }
 
   const {
-    networkConfig,
-    connexUtils,
+    chain,
+    wConnex,
     vtho,
     trader,
   } = connection
 
-  // Defining filters for each event type.
+  // Define filters for each event type.
   const filters: Record<EventType, Filter> = {
-    "APPROVAL": vtho.events.Approval.filter([{_spender: networkConfig.trader}]),
+    "APPROVAL": vtho.events.Approval.filter([{_spender: chain.trader}]),
     "CONFIG": trader.events.Config.filter([{}]),
     "SWAP": trader.events.Swap.filter([{}]),
   }
 
-  // Get last inspected block from remote service.
+  // Get latest inspected block from remote service.
   let lastBlockNumber = await getHead();
 
   // Listen to new blocks being inserted into the blockchain.
-  const ticker = connexUtils.ticker();
+  const ticker = wConnex.getTicker();
 
   for (;;) {
     try {
+      // Get latest block data.
       const currentBlock = await ticker.next();
+
+      if (currentBlock == null) {
+        throw new Error("Could get current block")
+      }
 
       console.log(`Block number: ${currentBlock.number}`)
 
-      // Fetch events and forward them to the remote service.
+      // Fetch events from the chain and forward them to the remote service.
       for (const eventType of EVENT_TYPES) {
         const filter = filters[eventType]
           .order("asc")

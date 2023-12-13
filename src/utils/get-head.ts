@@ -1,9 +1,4 @@
-import {getNetworkConfig} from '../config/index';
-import {getEnvVars} from '../config/get-env-vars'
-
-const {CHAIN_ID} = getEnvVars();
-
-const networkConfig = getNetworkConfig(CHAIN_ID);
+import {chain} from '../config/index';
 
 /**
  * Get latest block number from consumer service.
@@ -11,7 +6,7 @@ const networkConfig = getNetworkConfig(CHAIN_ID);
  */
 export async function getHead(): Promise<number> {
   try {
-    const response = await fetch(networkConfig.getHeadEndpoint);
+    const response = await fetch(chain.getHeadEndpoint);
 
     const json = await response.json() as {lastBlockNumber: number};
 
