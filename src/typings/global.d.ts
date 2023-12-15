@@ -1,10 +1,8 @@
-import { ChainId } from "@vearnfi/config"
-
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
       PORT?: string;
-      CHAIN_ID: ChainId;
+      CHAIN_ID: string;
     }
   }
 

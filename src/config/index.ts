@@ -1,9 +1,11 @@
 import { getChainData } from "@vearnfi/config";
 import { getEnvVars } from "./get-env-vars";
 
-const { CHAIN_ID } = getEnvVars()
+const { CHAIN_ID } = getEnvVars();
 
-export const chain = getChainData(CHAIN_ID)
+export const chain = getChainData(CHAIN_ID);
+
+console.log({CHAIN_ID, chain})
 
 /**
  * List of domains that have been whitelisted for server interaction.

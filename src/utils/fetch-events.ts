@@ -1,6 +1,8 @@
-import type { Filter } from "../typings/types"
+import type { Filter } from "../typings/types";
 
-export type Callback = (events: Connex.Thor.Filter.Row<"event", Connex.Thor.Account.WithDecoded>[]) => Promise<void>
+export type Callback = (
+  events: Connex.Thor.Filter.Row<"event", Connex.Thor.Account.WithDecoded>[],
+) => Promise<void>;
 
 /**
  * Fetch events in batches by applying the given filter.
@@ -12,7 +14,7 @@ export type Callback = (events: Connex.Thor.Filter.Row<"event", Connex.Thor.Acco
 export async function fetchEvents(
   filter: Filter,
   callback: Callback,
-  limit: number = 20
+  limit: number = 20,
 ): Promise<void> {
   let offset = 0;
 

@@ -1,3 +1,5 @@
+import { ChainId } from "@vearnfi/config";
+
 /**
  * Utility function to read and validate environment variables.
  * @return {{
@@ -12,6 +14,6 @@ export function getEnvVars() {
   }
 
   return {
-    CHAIN_ID,
+    CHAIN_ID: parseInt(CHAIN_ID, 10) as ChainId,
   };
 }
