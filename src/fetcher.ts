@@ -1,24 +1,15 @@
 import type { Filter } from "@vearnfi/wrapped-connex";
 import type { EventType } from "./typings/types";
 import { EVENT_TYPES } from "./typings/types";
-import { connect } from "./utils/connect";
-import { Api } from "./api";
+import type { Connection } from "./utils/connect";
+import type { Api } from "./api";
 
 /**
  * Infinite loop for fetching and forwarding events from
  * the blockchain to a remote service.
  */
-export async function fetcher() {
-  const connection = await connect();
-
-  if (connection == null) {
-    console.error("No connection");
-    return;
-  }
-
-  const { chain, wConnex, vtho, trader } = connection;
-
-  const api = new Api(chain);
+export async function fetcher(connection: Connection, api: Api) {
+  const { wConnex, vtho, trader } = connection;
 
   // Define filters for each event type.
   const filters: Record<EventType, Filter> = {

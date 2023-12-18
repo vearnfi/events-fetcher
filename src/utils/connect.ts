@@ -3,12 +3,10 @@ import { Driver, SimpleNet } from "@vechain/connex-driver";
 import type { ChainData } from "@vearnfi/config";
 import { WrappedConnex } from "@vearnfi/wrapped-connex";
 import type { Contract, AbiItem } from "@vearnfi/wrapped-connex";
-import { chain } from "../config/index";
 import * as vthoArtifact from "../artifacts/Energy.json";
 import * as traderArtifact from "../artifacts/Trader.json";
 
 export type Connection = {
-  chain: ChainData;
   wConnex: WrappedConnex;
   /** Reference to the VTHO contract. */
   vtho: Contract;
@@ -16,7 +14,9 @@ export type Connection = {
   trader: Contract;
 };
 
-export async function connect(): Promise<Connection | undefined> {
+export async function connect(
+  chain: ChainData,
+): Promise<Connection | undefined> {
   try {
     const net = new SimpleNet(chain.rpc[0]);
     const driver = await Driver.connect(net);
@@ -33,7 +33,6 @@ export async function connect(): Promise<Connection | undefined> {
     );
 
     return {
-      chain,
       wConnex,
       vtho,
       trader,

@@ -1,6 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { makeApp } from "./app";
+import { chain } from "./config";
+import { connect } from "./utils/connect";
+import { Api } from "./api";
 import { fetcher } from "./fetcher";
 
 /**
@@ -10,4 +13,17 @@ import { fetcher } from "./fetcher";
  */
 const app = makeApp();
 
-app.listen(process.env.PORT || 5000, fetcher);
+async function main() {
+  const connection = await connect(chain);
+
+  if (connection == null) {
+    console.error("No connection");
+    return;
+  }
+
+  const api = new Api(chain);
+
+  await fetcher(connection, api);
+}
+
+app.listen(process.env.PORT || 5000, main);
