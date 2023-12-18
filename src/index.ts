@@ -33,7 +33,7 @@ async function main() {
   };
 
   // Get latest inspected block from remote service.
-  let lastBlockNumber = await getHead();
+  let lastBlockNumber = await getHead(chain.getHeadEndpoint);
 
   // Listen to new blocks being inserted into the blockchain.
   const ticker = wConnex.getTicker();
@@ -58,7 +58,7 @@ async function main() {
         });
 
         await fetchEvents(filter, async (events) => {
-          await forwardEvents(eventType, events);
+          await forwardEvents(chain.registerEventsEndpoint, eventType, events);
         });
       }
 

@@ -2,7 +2,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       PORT?: string;
-      CHAIN_ID: string;
+      CHAIN_ID?: string;
     }
   }
 

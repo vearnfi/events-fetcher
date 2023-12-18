@@ -1,18 +1,18 @@
-import { chain } from "../config/index";
 import type { RawEvent, EventType } from "../typings/types";
 
 /**
- * Forward events via endpoint call to consumer service.
+ * Make a POST request to forward events to the given endpoint url.
+ * @param {string} url Endpoint URL.
  * @param {EventType} eventType Event type.
+ * @param {RawEvent[]} events List of events.
  * @return {string} Response.
  */
 export async function forwardEvents(
+  url: string,
   eventType: EventType,
   events: RawEvent[],
 ): Promise<string> {
-  const url = `${chain.registerEventsEndpoint}?eventType=${eventType}`;
-
-  const response = await fetch(url, {
+  const response = await fetch(`${url}?eventType=${eventType}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

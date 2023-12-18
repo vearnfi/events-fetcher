@@ -22,7 +22,7 @@ This module implements the following logic to update the attribute of metadata i
 As it works with connex to sync the backend and the VeChain node, it always works along with the package [@vechain/connex-driver, @vechain/connex-framework](https://github.com/vechain/connex/tree/master/packages/driver).
 
 ```sh
-npm i @vechain/connex-framework @vechain/connex-driver thor-devkit
+npm i @vechain/connex-framework @vechain/connex-driver
 ```
 
 ## Code Structure
