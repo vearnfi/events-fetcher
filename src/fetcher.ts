@@ -1,9 +1,8 @@
-import type { EventType, Filter } from "./typings/types";
+import type { Filter } from "@vearnfi/wrapped-connex";
+import type { EventType } from "./typings/types";
 import { EVENT_TYPES } from "./typings/types";
 import { connect } from "./utils/connect";
-import { getHead } from "./utils/get-head";
-import { forwardEvents } from "./utils/forward-events";
-import { fetchEvents } from "./utils/fetch-events";
+import { Api } from "./api";
 
 /**
  * Infinite loop for fetching and forwarding events from
@@ -19,15 +18,17 @@ export async function fetcher() {
 
   const { chain, wConnex, vtho, trader } = connection;
 
+  const api = new Api(chain);
+
   // Define filters for each event type.
   const filters: Record<EventType, Filter> = {
-    APPROVAL: vtho.events.Approval.filter([{ _spender: chain.trader }]),
+    APPROVAL: vtho.events.Approval.filter([{ _spender: trader.getAddress() }]),
     CONFIG: trader.events.Config.filter([{}]),
     SWAP: trader.events.Swap.filter([{}]),
   };
 
   // Get latest inspected block from remote service.
-  let lastBlockNumber = await getHead(chain.getHeadEndpoint);
+  let lastBlockNumber = await api.getHead();
 
   // Listen to new blocks being inserted into the blockchain.
   const ticker = wConnex.getTicker();
@@ -51,8 +52,8 @@ export async function fetcher() {
           to: currentBlock.number,
         });
 
-        await fetchEvents(filter, async (events) => {
-          await forwardEvents(chain.registerEventsEndpoint, eventType, events);
+        await wConnex.fetchEvents(filter, async (events) => {
+          await api.forwardEvents(eventType, events);
         });
       }
 
