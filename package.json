@@ -11,7 +11,7 @@
     "lint-and-fix": "eslint . --ext .ts --fix",
     "format": "prettier --config .prettierrc --write .",
     "start": "node ./dist/index.js",
-    "test": "npm run test"
+    "test": "jest --watchAll"
   },
   "author": "federodes",
   "license": "ISC",
@@ -20,14 +20,17 @@
     "@vearnfi/wrapped-connex": "^1.5.1",
     "@vechain/connex-driver": "^2.0.10",
     "@vechain/connex-framework": "^2.0.10",
+    "axios": "^1.6.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.1",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.23.3",
     "@types/cors": "^2.8.15",
     "@types/express": "^4.17.20",
+    "@types/jest": "^29.5.11",
     "@types/node": "^20.8.8",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
