@@ -54,7 +54,7 @@
 //   }
 // }
 
-import axios from "axios"
+import axios from "axios";
 import { ChainData } from "@vearnfi/config";
 import type { RawEvent } from "@vearnfi/wrapped-connex";
 import type { EventType } from "../typings/types";
@@ -70,7 +70,6 @@ export class Api {
    * @return {number} Latest block number.
    */
   async getHead(): Promise<number> {
-    // try {
     const response = await axios.get(this.chain.getHeadEndpoint);
 
     if (response.status !== 200) {
@@ -80,10 +79,6 @@ export class Api {
     const data = response.data as { lastBlockNumber: number };
 
     return data.lastBlockNumber;
-    // } catch (error) {
-    //   console.error(error);
-    //   return 0;
-    // }
   }
 
   /**

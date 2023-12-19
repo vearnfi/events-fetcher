@@ -1,48 +1,57 @@
-import axios from "axios"
+import axios from "axios";
 // import fetch, { Response } from 'node-fetch';
-import { getChainData } from "@vearnfi/config"
+import { getChainData } from "@vearnfi/config";
 import { Api } from "./index";
 
-const chain = getChainData(100011) // dev
+const chain = getChainData(100011); // dev
 
-jest.mock('axios');
+jest.mock("axios");
 // jest.mock('node-fetch', () => jest.fn());
 
 describe("Api class", () => {
-  let api: Api
+  let api: Api;
 
   beforeEach(() => {
-    api = new Api(chain)
-  })
+    api = new Api(chain);
+  });
 
   describe("getHead", () => {
-    it.only("gets the head from the remote service", async () => {
+    it("returns the head from the remote service", async () => {
       // Arrange
+      const expected = 12345;
       const response = {
         status: 200,
         data: {
-          lastBlockNumber: 12345,
-        }
+          lastBlockNumber: expected,
+        },
       };
       (axios.get as jest.Mock).mockResolvedValue(response);
-      // (fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue(new Response(JSON.stringify({hola: 1})));
-
 
       // Act
-      await api.getHead()
+      const actual = await api.getHead();
 
       // Assert
-        expect(axios.get).toHaveBeenCalledTimes(1);
-  // expect(axios.get).toHaveBeenCalledWith('https://website.com/users', {
-  //   method: 'POST',
-  // });
+      expect(axios.get).toHaveBeenCalledTimes(1);
+      expect(expected).toBe(actual);
     });
 
-    it("throws when there is an error fetching the head", async () => {});
+    it("throws when there is an error fetching the head", async () => {
+      // Arrange
+      const response = {
+        status: 500,
+      };
+      (axios.get as jest.Mock).mockResolvedValue(response);
+      // (axios.get as jest.Mock).mockRejectedValue(new Error());
+
+      // Act
+
+      // Assert
+      await expect(api.getHead()).rejects.toThrow("Error fetching head from remote service");
+    });
   });
 
   describe("forwardEvents", () => {
-    it("forwards events to the remove service", async () => {});
+    it("forwards events to the remote service", async () => {});
 
     it("throws when there is an error forwarding the events", async () => {});
   });

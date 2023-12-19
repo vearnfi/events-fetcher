@@ -5,6 +5,6 @@ module.exports = {
   clearMocks: true,
   coverageProvider: "v8",
   moduleNameMapper: {
-    '^axios$': require.resolve('axios'),
-  }
+    "^axios$": require.resolve("axios"),
+  },
 };
