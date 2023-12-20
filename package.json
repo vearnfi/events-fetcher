@@ -16,7 +16,7 @@
   "author": "federodes",
   "license": "ISC",
   "dependencies": {
-    "@vearnfi/config": "^1.3.1",
+    "@vearnfi/config": "^1.4.1",
     "@vearnfi/wrapped-connex": "^1.5.1",
     "@vechain/connex-driver": "^2.0.10",
     "@vechain/connex-framework": "^2.0.10",
