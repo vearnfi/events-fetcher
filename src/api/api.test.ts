@@ -40,8 +40,8 @@ describe("Api class", () => {
       const error = {
         response: {
           status: 500,
-          statusText: "Internal Server error",
-          data: "Internal Server error",
+          statusText: "Internal Server Error",
+          data: "Internal Server Error",
         },
       };
       (axios.get as jest.Mock).mockRejectedValue(error);
@@ -94,8 +94,8 @@ describe("Api class", () => {
       const error = {
         response: {
           status: 500,
-          statusText: "Internal Server error",
-          data: "Internal Server error",
+          statusText: "Internal Server Error",
+          data: "Internal Server Error",
         },
       };
       (axios.post as jest.Mock).mockRejectedValue(error);

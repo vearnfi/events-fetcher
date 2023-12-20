@@ -16,28 +16,24 @@ export type Connection = {
 
 export async function connect(
   chain: ChainData,
-): Promise<Connection | undefined> {
-  try {
-    const net = new SimpleNet(chain.rpc[0]);
-    const driver = await Driver.connect(net);
-    const connex = new Framework(driver);
-    const wConnex = new WrappedConnex(connex);
+): Promise<Connection> {
+  const net = new SimpleNet(chain.rpc[0]);
+  const driver = await Driver.connect(net);
+  const connex = new Framework(driver);
+  const wConnex = new WrappedConnex(connex);
 
-    // Create a reference to the `VTHO` contract.
-    const vtho = wConnex.getContract(vthoArtifact.abi as AbiItem[], chain.vtho);
+  // Create a reference to the `VTHO` contract.
+  const vtho = wConnex.getContract(vthoArtifact.abi as AbiItem[], chain.vtho);
 
-    // Create a reference to the `Trader` contract.
-    const trader = wConnex.getContract(
-      traderArtifact.abi as AbiItem[],
-      chain.trader,
-    );
+  // Create a reference to the `Trader` contract.
+  const trader = wConnex.getContract(
+    traderArtifact.abi as AbiItem[],
+    chain.trader,
+  );
 
-    return {
-      wConnex,
-      vtho,
-      trader,
-    };
-  } catch (error) {
-    return;
-  }
+  return {
+    wConnex,
+    vtho,
+    trader,
+  };
 }

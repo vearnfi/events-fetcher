@@ -19,7 +19,7 @@ export async function fetcher(connection: Connection, api: Api) {
   };
 
   // Get latest inspected block from remote service.
-  let lastBlockNumber = 0; // await api.getHead();
+  let lastBlockNumber = await api.getHead();
 
   // Listen to new blocks being inserted into the blockchain.
   const ticker = wConnex.getTicker();
@@ -45,8 +45,7 @@ export async function fetcher(connection: Connection, api: Api) {
         });
 
         await wConnex.fetchEvents(filter, async (events) => {
-          // await api.forwardEvents(eventType, events);
-          await api.forwardEvents(eventType, []);
+          await api.forwardEvents(eventType, events);
         });
       }
 
