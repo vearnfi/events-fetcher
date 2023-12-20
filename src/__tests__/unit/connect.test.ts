@@ -1,5 +1,5 @@
 import { getChainData } from "@vearnfi/config"
-import { connect } from "./connect"
+import { connect } from "../../utils/connect"
 
 describe("connect", () => {
   it("returns a connection object", async () => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getChainData } from "@vearnfi/config";
-import { Api } from "./index";
-import * as approvalEvents from "../__tests__/fixtures/approval-events.json";
+import { Api } from "../../api";
+import * as approvalEvents from "../fixtures/approval-events.json";
 
 const chain = getChainData(100011); // dev
 
