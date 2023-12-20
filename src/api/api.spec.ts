@@ -37,15 +37,18 @@ describe("Api class", () => {
 
     it("throws when there is an error fetching the head", async () => {
       // Arrange
-      const response = {
-        status: 500,
-        statusText: "ERROR",
+      const error = {
+        response: {
+          status: 500,
+          statusText: "Internal Server error",
+          data: "Internal Server error",
+        },
       };
-      (axios.get as jest.Mock).mockResolvedValue(response);
+      (axios.get as jest.Mock).mockRejectedValue(error);
 
       // Act + Assert
       await expect(api.getHead()).rejects.toThrow(
-        "Error fetching head from remote service",
+        "Error fetching head from remote service. Status: 500",
       );
     });
   });
@@ -68,7 +71,7 @@ describe("Api class", () => {
       expect(axios.post).toHaveBeenCalledTimes(1);
     });
 
-    it("throws with a 400 status when passing an empty array of events", async () => {
+    it("throws with a 400 status error when passing an empty array of events", async () => {
       // Arrange
       const error = {
         response: {
@@ -86,18 +89,23 @@ describe("Api class", () => {
       expect(axios.post).toHaveBeenCalledTimes(1);
     });
 
-    it("throws when there is an error forwarding the events", async () => {
+    it("throws with a 500 status error when there is an internal server error", async () => {
       // Arrange
-      const response = {
-        status: 500,
-        statusText: "ERROR",
+      const error = {
+        response: {
+          status: 500,
+          statusText: "Internal Server error",
+          data: "Internal Server error",
+        },
       };
-      (axios.post as jest.Mock).mockResolvedValue(response);
+      (axios.post as jest.Mock).mockRejectedValue(error);
 
       // Act + Assert
       await expect(
         api.forwardEvents("APPROVAL", approvalEvents.events),
-      ).rejects.toThrow("Error forwarding events to the remote service");
+      ).rejects.toThrow(
+        "Error forwarding events to the remote service. Status: 500",
+      );
     });
   });
 });
