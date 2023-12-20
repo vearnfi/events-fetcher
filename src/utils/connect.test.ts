@@ -13,5 +13,7 @@ describe("connect", () => {
     expect(connection.wConnex).not.toBeUndefined()
     expect(connection.vtho).not.toBeUndefined()
     expect(connection.trader).not.toBeUndefined()
+    expect(connection.vtho.getAddress()).toEqual(chain.vtho)
+    expect(connection.trader.getAddress()).toEqual(chain.trader)
   })
 })

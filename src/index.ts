@@ -16,11 +16,6 @@ const app = makeApp();
 async function main() {
   const connection = await connect(chain);
 
-  if (connection == null) {
-    console.error("No connection");
-    return;
-  }
-
   const api = new Api(chain);
 
   await fetcher(connection, api);
