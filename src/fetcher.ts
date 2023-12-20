@@ -19,7 +19,7 @@ export async function fetcher(connection: Connection, api: Api) {
   };
 
   // Get latest inspected block from remote service.
-  let lastBlockNumber = await api.getHead();
+  let lastBlockNumber = 0; // await api.getHead();
 
   // Listen to new blocks being inserted into the blockchain.
   const ticker = wConnex.getTicker();
@@ -37,6 +37,7 @@ export async function fetcher(connection: Connection, api: Api) {
 
       // Fetch events from the chain and forward them to the remote service.
       for (const eventType of EVENT_TYPES) {
+        console.log({ eventType });
         const filter = filters[eventType].order("asc").range({
           unit: "block",
           from: lastBlockNumber,
@@ -44,7 +45,8 @@ export async function fetcher(connection: Connection, api: Api) {
         });
 
         await wConnex.fetchEvents(filter, async (events) => {
-          await api.forwardEvents(eventType, events);
+          // await api.forwardEvents(eventType, events);
+          await api.forwardEvents(eventType, []);
         });
       }
 
