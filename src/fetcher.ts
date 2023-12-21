@@ -8,7 +8,11 @@ import type { Api } from "./api";
  * Infinite loop for fetching and forwarding events from
  * the blockchain to a remote service.
  */
-export async function fetcher(connection: Connection, api: Api) {
+export async function fetcher(
+  stopCondition: (cycles: number) => boolean,
+  connection: Connection,
+  api: Api,
+) {
   const { wConnex, vtho, trader } = connection;
 
   // Define filters for each event type.
@@ -20,14 +24,21 @@ export async function fetcher(connection: Connection, api: Api) {
 
   // Get latest inspected block from remote service.
   let lastBlockNumber = await api.getHead();
+  console.log({ lastBlockNumber });
 
   // Listen to new blocks being inserted into the blockchain.
   const ticker = wConnex.getTicker();
 
-  for (;;) {
+  let cyclesCount = 0;
+  console.log({ cyclesCount });
+
+  while (stopCondition(cyclesCount)) {
+    console.log("IN loop");
+
     try {
       // Get latest block data.
       const currentBlock = await ticker.next();
+      console.log({ currentBlock });
 
       if (currentBlock == null) {
         throw new Error("Could get current block");
@@ -45,11 +56,13 @@ export async function fetcher(connection: Connection, api: Api) {
         });
 
         await wConnex.fetchEvents(filter, async (events) => {
+          // console.log({ events: JSON.stringify(events, null, 2) });
           await api.forwardEvents(eventType, events);
         });
       }
 
       lastBlockNumber = currentBlock.number;
+      cyclesCount++;
     } catch (error) {
       console.error("ERROR fetching events " + error);
     }
