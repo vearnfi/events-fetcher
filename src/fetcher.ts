@@ -9,7 +9,7 @@ import type { Api } from "./api";
  * the blockchain to a remote service.
  */
 export async function fetcher(
-  stopCondition: (cycles: number) => boolean,
+  stop: (cycles: number) => boolean,
   connection: Connection,
   api: Api,
 ) {
@@ -24,21 +24,16 @@ export async function fetcher(
 
   // Get latest inspected block from remote service.
   let lastBlockNumber = await api.getHead();
-  console.log({ lastBlockNumber });
 
   // Listen to new blocks being inserted into the blockchain.
   const ticker = wConnex.getTicker();
 
   let cyclesCount = 0;
-  console.log({ cyclesCount });
 
-  while (stopCondition(cyclesCount)) {
-    console.log("IN loop");
-
+  while (!stop(cyclesCount)) {
     try {
       // Get latest block data.
       const currentBlock = await ticker.next();
-      console.log({ currentBlock });
 
       if (currentBlock == null) {
         throw new Error("Could get current block");
@@ -48,7 +43,6 @@ export async function fetcher(
 
       // Fetch events from the chain and forward them to the remote service.
       for (const eventType of EVENT_TYPES) {
-        console.log({ eventType });
         const filter = filters[eventType].order("asc").range({
           unit: "block",
           from: lastBlockNumber,
@@ -56,7 +50,6 @@ export async function fetcher(
         });
 
         await wConnex.fetchEvents(filter, async (events) => {
-          // console.log({ events: JSON.stringify(events, null, 2) });
           await api.forwardEvents(eventType, events);
         });
       }

@@ -1,6 +1,5 @@
 import { ChainData, getChainData } from "@vearnfi/config";
-import { wrapConnex } from "@vearnfi/wrapped-connex";
-import type { WrappedConnex, Filter, Callback, RawEvent } from "@vearnfi/wrapped-connex";
+import type { Filter, Callback, RawEvent } from "@vearnfi/wrapped-connex";
 import { connect } from "../../utils/connect";
 import type { Connection } from "../../utils/connect";
 import { fetcher } from "../../fetcher";
@@ -10,46 +9,27 @@ import * as approvalEvents from "../fixtures/approval-events.json";
 import * as configEvents from "../fixtures/config-events.json"
 import * as swapEvents from "../fixtures/swap-events.json"
 
-// const api: Api = {
-//   getHead: jest.fn(() => 0),
-//   for
-// }
-
 jest.mock("../../api");
 // jest.mock("../../utils/connect")
-
-function* getTicker() {
-  let index = 0;
-  while (true) {
-    yield index;
-    index++;
-  }
-}
 
 describe("fetcher", () => {
   let chain: ChainData;
   let connection: Connection;
   let api: Api;
   let currentBlock: number;
+  let index = 0
 
   beforeEach(async () => {
     chain = getChainData(100010);
     connection = await connect(chain);
     api = new Api(chain);
     currentBlock = 0;
-    console.log({ connection });
   });
 
-  it.only("fetches and forwards events to the remote service", async () => {
+  it("fetches and forwards all type of events to the remote service", async () => {
     // Arrange
     const mockGetHead = (api.getHead as jest.Mock).mockResolvedValue(0);
     const mockForwardEvents = (api.forwardEvents as jest.Mock).mockResolvedValue(200);
-    // (connection.wConnex.getTicker as jest.Mock).mockReturnValue({
-    //   next: async () => {
-    //   currentBlock++
-    //     return Promise.resolve(currentBlock)
-    // }})
-    let callsCount = 0
     const mockConnection: Connection = {
       ...connection,
       wConnex: {
@@ -68,61 +48,23 @@ describe("fetcher", () => {
           },
         }),
         fetchEvents: async (filter: Filter, cb: Callback) => {
-          let events: RawEvent[] = []
-          switch(callsCount) {
-            case 0: // "APPROVAL"
-              events = approvalEvents.events
-            case 1: // "CONFIG"
-             events = configEvents.events
-            case 2: // "SWAP"
-            events = swapEvents.events
-          }
-            callsCount++
-            cb(events)
+            const events: RawEvent[][] = [approvalEvents, configEvents, swapEvents].map(json => json.events)
+            cb(events[index] || events[0])
+            index++
         }
       },
     };
-    // (connection.wConnex.fetchEvents as jest.Mock).mockImplementation(async (filter: Filter, cb: Callback) => {
-    //   cb(approvalEvents.events)
-    // })
 
     // Act
-    await fetcher((cycles) => cycles < 1, mockConnection, api);
+    await fetcher((cycles) => cycles >= 1, mockConnection, api);
 
     // Assert
-    // expect(api.forwardEvents as jest.Mock).toHaveBeenCalledTimes(3);
     expect(mockForwardEvents).toHaveBeenCalledTimes(3);
     expect(mockForwardEvents.mock.calls[0][0]).toBe(approvalEvents.eventType);
     expect(mockForwardEvents.mock.calls[1][0]).toBe(configEvents.eventType);
     expect(mockForwardEvents.mock.calls[2][0]).toBe(swapEvents.eventType);
-    // expect(mockForwardEvents.mock.calls[0][1]).toBe(ap provalEvents.events);
-    // expect(
-    //   (api.forwardEvents as jest.Mock).mock.calls[0][0],
-    // ).toHaveBeenCalledWith(approvalEvents.eventType);
-    // expect(api.forwardEvents).toHaveBeenCalledTimes(3)
-    // expect(api.forwardEvents).toHaveBeenCalledTimes(3)
+    expect(mockForwardEvents.mock.calls[0][1]).toBe(approvalEvents.events);
+    expect(mockForwardEvents.mock.calls[1][1]).toBe(configEvents.events);
+    expect(mockForwardEvents.mock.calls[2][1]).toBe(swapEvents.events);
   });
-  it("", async () => {});
-  it("", async () => {});
-  it("", async () => {});
-  it("", async () => {});
-  it("", async () => {});
 });
-
-// const wConnex: WrappedConnex = {
-//     getTicker,
-//     fetchEvents: async (filter: Filter, cb: Callback) => {
-//       cb(approvalEvents.events)
-//     }
-//   }
-
-// const connection: Connection = {
-//   ...connection_,
-//   wConnex: {
-//     // ...wConnex,
-//     ...connection_.wConnex,
-//     fetchEvents: async (filter: Filter, cb: Callback) => {
-//       cb(approvalEvents.events)
-//     }
-//   }
-// }

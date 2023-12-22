@@ -18,7 +18,7 @@ async function main() {
 
   const api = new Api(chain);
 
-  await fetcher(() => true, connection, api);
+  await fetcher(() => false, connection, api);
 }
 
 app.listen(process.env.PORT || 5000, main);

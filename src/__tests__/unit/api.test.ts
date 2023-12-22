@@ -47,6 +47,7 @@ describe("Api class", () => {
       (axios.get as jest.Mock).mockRejectedValue(error);
 
       // Act + Assert
+      expect.assertions(1);
       await expect(api.getHead()).rejects.toThrow(
         "Error fetching head from remote service. Status: 500",
       );
@@ -83,6 +84,7 @@ describe("Api class", () => {
       (axios.post as jest.Mock).mockRejectedValue(error);
 
       // Act + Assert
+      expect.assertions(2);
       await expect(api.forwardEvents("APPROVAL", [])).rejects.toThrow(
         "Error forwarding events to the remote service. Status: 400",
       );
@@ -101,6 +103,7 @@ describe("Api class", () => {
       (axios.post as jest.Mock).mockRejectedValue(error);
 
       // Act + Assert
+      expect.assertions(1);
       await expect(
         api.forwardEvents("APPROVAL", approvalEvents.events),
       ).rejects.toThrow(
