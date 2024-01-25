@@ -4,3 +4,4 @@ import {makeConnect} from "./connect";
 export const connect = makeConnect(chain);
 
 export type {Connect} from "./connect";
+export type {Logger} from "./logger";

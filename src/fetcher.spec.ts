@@ -9,6 +9,8 @@ import type {Connect} from "./utils/connect";
 import type {Api} from "./api";
 import {makeFetcher} from "./fetcher";
 
+const mockLogger = jest.fn(({status, data}) => Promise.resolve());
+
 describe("fetcher", () => {
   const chain = getChainData(100010);
 
@@ -18,7 +20,7 @@ describe("fetcher", () => {
 
   it("fetches and forwards all type of events to the remote service", async () => {
     // Arrange
-    expect.assertions(9);
+    expect.assertions(10);
     const events: RawEvent[][] = [approvalEvents, configEvents, swapEvents].map(
       (json) => json.events,
     );
@@ -38,7 +40,7 @@ describe("fetcher", () => {
       setHead: mockSetHead,
       forwardEvents: mockForwardEvents,
     });
-    const fetcher = makeFetcher(mockConnect, mockApi);
+    const fetcher = makeFetcher(mockConnect, mockApi, mockLogger);
 
     // Act
     await fetcher((blockNumber) => blockNumber >= initialBlock + 1); // test one loop only
@@ -53,11 +55,12 @@ describe("fetcher", () => {
     expect(mockForwardEvents.mock.calls[0][1]).toBe(approvalEvents.events);
     expect(mockForwardEvents.mock.calls[1][1]).toBe(configEvents.events);
     expect(mockForwardEvents.mock.calls[2][1]).toBe(swapEvents.events);
+    expect(mockLogger.mock.calls).toHaveLength(0);
   });
 
-  it.only("sets head every 36 blocks", async () => {
+  it("sets head every 36 blocks", async () => {
     // Arrange
-    expect.assertions(9);
+    expect.assertions(10);
     const events: RawEvent[][] = [approvalEvents, configEvents, swapEvents].map(
       (json) => json.events,
     );
@@ -77,7 +80,7 @@ describe("fetcher", () => {
       setHead: mockSetHead,
       forwardEvents: mockForwardEvents,
     });
-    const fetcher = makeFetcher(mockConnect, mockApi);
+    const fetcher = makeFetcher(mockConnect, mockApi, mockLogger);
 
     // Act
     await fetcher((blockNumber) => blockNumber >= initialBlock + 1); // test one loop only
@@ -92,5 +95,8 @@ describe("fetcher", () => {
     expect(mockForwardEvents.mock.calls[0][1]).toBe(approvalEvents.events);
     expect(mockForwardEvents.mock.calls[1][1]).toBe(configEvents.events);
     expect(mockForwardEvents.mock.calls[2][1]).toBe(swapEvents.events);
+    expect(mockLogger.mock.calls).toHaveLength(0);
   });
+
+  xit("forwards errors to logger", () => {});
 });

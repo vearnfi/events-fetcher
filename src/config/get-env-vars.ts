@@ -7,20 +7,24 @@ const chainIds = Object.keys(chains);
 /**
  * Utility function to read and validate environment variables.
  * @return {{
- * chainId: ChainId,
+ * CHAIN_ID: ChainId,
  * }} Environment variables
  */
 export function getEnvVars() {
-  const chainId = process.env.CHAIN_ID;
+  const {CHAIN_ID, DISCORD_WEBHOOK_URL} = process.env;
 
-  if (chainId == null) {
+  if (CHAIN_ID == null) {
     throw new Error("Missing env var CHAIN_ID");
   }
-  if (!chainIds.includes(chainId)) {
+  if (!chainIds.includes(CHAIN_ID)) {
     throw new Error("Invalid CHAIN_ID value");
+  }
+  if (DISCORD_WEBHOOK_URL == null) {
+    throw new Error("Missing env var DISCORD_WEBHOOK_URL");
   }
 
   return {
-    chainId: parseInt(chainId, 10) as ChainId,
+    CHAIN_ID: parseInt(CHAIN_ID, 10) as ChainId,
+    DISCORD_WEBHOOK_URL,
   };
 }

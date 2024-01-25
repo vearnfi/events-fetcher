@@ -3,6 +3,7 @@ declare global {
     interface ProcessEnv {
       PORT?: string;
       CHAIN_ID?: string;
+      DISCORD_WEBHOOK_URL?: string;
     }
   }
 

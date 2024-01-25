@@ -1,7 +1,7 @@
 import type {Filter} from "@vearnfi/wrapped-connex";
 import type {EventType} from "./typings/types";
 import {EVENT_TYPES} from "./typings/types";
-import type {Connect} from "./utils";
+import type {Connect, Logger} from "./utils";
 import type {Api} from "./api";
 
 export type Fetcher = (stop: (cycles: number) => boolean) => Promise<void>;
@@ -10,7 +10,11 @@ export type Fetcher = (stop: (cycles: number) => boolean) => Promise<void>;
  * Infinite loop for fetching and forwarding events from
  * the blockchain to a remote service.
  */
-export function makeFetcher(connect: Connect, api: Api): Fetcher {
+export function makeFetcher(
+  connect: Connect,
+  api: Api,
+  logger: Logger,
+): Fetcher {
   return async function fetcher(stop: (cycles: number) => boolean) {
     try {
       const {wConnex, vtho, trader} = await connect();
@@ -60,8 +64,11 @@ export function makeFetcher(connect: Connect, api: Api): Fetcher {
           await api.setHead(lastBlockNumber);
         }
       }
-    } catch (error) {
-      console.error("ERROR fetching events " + error);
+    } catch (error: any) {
+      await logger({
+        status: "ERROR",
+        data: `fetcher: ${error?.message || "Unknown error occurred"}`,
+      });
     }
   };
 }
