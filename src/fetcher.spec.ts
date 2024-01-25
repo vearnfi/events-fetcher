@@ -18,26 +18,73 @@ describe("fetcher", () => {
 
   it("fetches and forwards all type of events to the remote service", async () => {
     // Arrange
-    expect.assertions(8);
+    expect.assertions(9);
     const events: RawEvent[][] = [approvalEvents, configEvents, swapEvents].map(
       (json) => json.events,
     );
-    const mockConnect: Connect = makeFakeConnect(chain, events);
-    const mockGetHead = jest.fn(() => Promise.resolve(0));
+    const initialBlock = 0;
+    const mockGetHead = jest.fn(() => Promise.resolve(initialBlock));
+    const mockSetHead = jest.fn((block) => Promise.resolve(block));
     const mockForwardEvents = jest.fn(
       (eventType: EventType, events: RawEvent[]) => Promise.resolve(201),
     );
+    const mockConnect: Connect = makeFakeConnect(
+      chain,
+      events,
+      initialBlock + 1,
+    );
     const mockApi: Api = Object.freeze({
       getHead: mockGetHead,
+      setHead: mockSetHead,
       forwardEvents: mockForwardEvents,
     });
     const fetcher = makeFetcher(mockConnect, mockApi);
 
     // Act
-    await fetcher((cycles) => cycles >= 1); // test one loop only
+    await fetcher((blockNumber) => blockNumber >= initialBlock + 1); // test one loop only
 
     // Assert
     expect(mockGetHead).toHaveBeenCalledTimes(1);
+    expect(mockSetHead).toHaveBeenCalledTimes(0);
+    expect(mockForwardEvents).toHaveBeenCalledTimes(3);
+    expect(mockForwardEvents.mock.calls[0][0]).toBe(approvalEvents.eventType);
+    expect(mockForwardEvents.mock.calls[1][0]).toBe(configEvents.eventType);
+    expect(mockForwardEvents.mock.calls[2][0]).toBe(swapEvents.eventType);
+    expect(mockForwardEvents.mock.calls[0][1]).toBe(approvalEvents.events);
+    expect(mockForwardEvents.mock.calls[1][1]).toBe(configEvents.events);
+    expect(mockForwardEvents.mock.calls[2][1]).toBe(swapEvents.events);
+  });
+
+  it.only("sets head every 36 blocks", async () => {
+    // Arrange
+    expect.assertions(9);
+    const events: RawEvent[][] = [approvalEvents, configEvents, swapEvents].map(
+      (json) => json.events,
+    );
+    const initialBlock = 35;
+    const mockGetHead = jest.fn(() => Promise.resolve(initialBlock));
+    const mockSetHead = jest.fn((block) => Promise.resolve(block));
+    const mockForwardEvents = jest.fn(
+      (eventType: EventType, events: RawEvent[]) => Promise.resolve(201),
+    );
+    const mockConnect: Connect = makeFakeConnect(
+      chain,
+      events,
+      initialBlock + 1,
+    );
+    const mockApi: Api = Object.freeze({
+      getHead: mockGetHead,
+      setHead: mockSetHead,
+      forwardEvents: mockForwardEvents,
+    });
+    const fetcher = makeFetcher(mockConnect, mockApi);
+
+    // Act
+    await fetcher((blockNumber) => blockNumber >= initialBlock + 1); // test one loop only
+
+    // Assert
+    expect(mockGetHead).toHaveBeenCalledTimes(1);
+    expect(mockSetHead).toHaveBeenCalledTimes(1);
     expect(mockForwardEvents).toHaveBeenCalledTimes(3);
     expect(mockForwardEvents.mock.calls[0][0]).toBe(approvalEvents.eventType);
     expect(mockForwardEvents.mock.calls[1][0]).toBe(configEvents.eventType);

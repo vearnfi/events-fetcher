@@ -12,25 +12,25 @@ export type Fetcher = (stop: (cycles: number) => boolean) => Promise<void>;
  */
 export function makeFetcher(connect: Connect, api: Api): Fetcher {
   return async function fetcher(stop: (cycles: number) => boolean) {
-    const {wConnex, vtho, trader} = await connect();
+    try {
+      const {wConnex, vtho, trader} = await connect();
 
-    // Define filters for each event type.
-    const filters: Record<EventType, Filter> = {
-      APPROVAL: vtho.events.Approval.filter([{_spender: trader.getAddress()}]),
-      CONFIG: trader.events.Config.filter([{}]),
-      SWAP: trader.events.Swap.filter([{}]),
-    };
+      // Define filters for each event type.
+      const filters: Record<EventType, Filter> = {
+        APPROVAL: vtho.events.Approval.filter([
+          {_spender: trader.getAddress()},
+        ]),
+        CONFIG: trader.events.Config.filter([{}]),
+        SWAP: trader.events.Swap.filter([{}]),
+      };
 
-    // Get latest inspected block from remote service.
-    let lastBlockNumber = await api.getHead();
+      // Get latest inspected block from remote service.
+      let lastBlockNumber = await api.getHead();
 
-    // Listen to new blocks being inserted into the blockchain.
-    const ticker = wConnex.getTicker();
+      // Listen to new blocks being inserted into the blockchain.
+      const ticker = wConnex.getTicker();
 
-    let cyclesCount = 0;
-
-    while (!stop(cyclesCount)) {
-      try {
+      while (!stop(lastBlockNumber)) {
         // Get latest block data.
         const currentBlock = await ticker.next();
 
@@ -54,10 +54,14 @@ export function makeFetcher(connect: Connect, api: Api): Fetcher {
         }
 
         lastBlockNumber = currentBlock.number;
-        cyclesCount++;
-      } catch (error) {
-        console.error("ERROR fetching events " + error);
+
+        // Update head every 36 blocks (1 hour).
+        if (lastBlockNumber % 36 === 0) {
+          await api.setHead(lastBlockNumber);
+        }
       }
+    } catch (error) {
+      console.error("ERROR fetching events " + error);
     }
   };
 }
