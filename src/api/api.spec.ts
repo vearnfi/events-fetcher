@@ -1,7 +1,8 @@
 import axios from "axios";
-import { getChainData } from "@vearnfi/config";
-import { Api } from "../../api";
-import * as approvalEvents from "../fixtures/approval-events.json";
+import {getChainData} from "@vearnfi/config";
+import * as approvalEvents from "../__tests__/fixtures/approval-events.json";
+import {makeApi} from "./api";
+import type {Api} from "./api";
 
 const chain = getChainData(100011); // dev
 
@@ -11,7 +12,7 @@ describe("Api class", () => {
   let api: Api;
 
   beforeEach(() => {
-    api = new Api(chain);
+    api = makeApi(chain);
   });
 
   describe("getHead", () => {
@@ -57,7 +58,7 @@ describe("Api class", () => {
   describe("forwardEvents", () => {
     it("returns status 200 when the events are correctly sent", async () => {
       // Arrange
-      const expected = 200;
+      const expected = 201;
       const response = {
         status: expected,
         statusText: "OK",

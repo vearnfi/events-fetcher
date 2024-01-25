@@ -7,4 +7,9 @@ module.exports = {
   moduleNameMapper: {
     "^axios$": require.resolve("axios"),
   },
+  modulePathIgnorePatterns: [
+    "<rootDir>/lib/",
+    "<rootDir>/src/__tests__/fixtures",
+  ],
+  verbose: true,
 };

@@ -1,23 +1,27 @@
-import type { Filter } from "@vearnfi/wrapped-connex";
-import type { EventType } from "./typings/types";
-import { EVENT_TYPES } from "./typings/types";
-import type { Connection } from "./utils/connect";
-import type { Api } from "./api";
+import type {Filter} from "@vearnfi/wrapped-connex";
+import type {EventType} from "./typings/types";
+import {EVENT_TYPES} from "./typings/types";
+import type {Connect} from "./utils";
+import type {Api} from "./api";
+
+export type Fetcher = (stop: (cycles: number) => boolean) => Promise<void>
 
 /**
  * Infinite loop for fetching and forwarding events from
  * the blockchain to a remote service.
  */
-export async function fetcher(
-  stop: (cycles: number) => boolean,
-  connection: Connection,
+export function makeFetcher(
+  connect: Connect,
   api: Api,
+): Fetcher {
+return async function fetcher(
+  stop: (cycles: number) => boolean,
 ) {
-  const { wConnex, vtho, trader } = connection;
+  const {wConnex, vtho, trader} = await connect();
 
   // Define filters for each event type.
   const filters: Record<EventType, Filter> = {
-    APPROVAL: vtho.events.Approval.filter([{ _spender: trader.getAddress() }]),
+    APPROVAL: vtho.events.Approval.filter([{_spender: trader.getAddress()}]),
     CONFIG: trader.events.Config.filter([{}]),
     SWAP: trader.events.Swap.filter([{}]),
   };
@@ -36,7 +40,7 @@ export async function fetcher(
       const currentBlock = await ticker.next();
 
       if (currentBlock == null) {
-        throw new Error("Could get current block");
+        throw new Error("Couldn't get current block");
       }
 
       console.log(`Block number: ${currentBlock.number}`);
@@ -60,4 +64,5 @@ export async function fetcher(
       console.error("ERROR fetching events " + error);
     }
   }
+}
 }

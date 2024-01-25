@@ -1,13 +1,19 @@
-import { getChainData } from "@vearnfi/config";
-import { connect } from "../../utils/connect";
+import {getChainData} from "@vearnfi/config";
+import {Connect, makeConnect} from "./connect";
 
 describe("connect", () => {
+  const chain = getChainData(100011);
+  let connect: Connect;
+
+  beforeEach(async () => {
+    connect = makeConnect(chain);
+  });
+
   it("returns a connection object", async () => {
     // Arrange
-    const chain = getChainData(100011);
 
     // Act
-    const connection = await connect(chain);
+    const connection = await connect();
 
     // Assert
     expect(connection.wConnex).not.toBeUndefined();

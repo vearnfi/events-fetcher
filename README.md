@@ -30,8 +30,8 @@ npm i @vechain/connex-framework @vechain/connex-driver
 To create a Framework instance:
 
 ```typescript
-import { Framework } from "@vechain/connex-framework";
-import { Driver, SimpleNet } from "@vechain/connex-driver";
+import {Framework} from "@vechain/connex-framework";
+import {Driver, SimpleNet} from "@vechain/connex-driver";
 
 //Create a connex instance
 const net = new SimpleNet("https://testnet.veblocks.net/");
@@ -46,13 +46,11 @@ for (;;) {
     //Filter the events from the latest event fetched to the latest event triggered in the chain
     //latestBlocknumber: Latest Block number in the Internal DB
     //latestBlockNum: Latest Block number in Chain
-    const filter = connex.thor
-      .filter("event", [{ address: SC_ADDRESS }])
-      .range({
-        unit: "block",
-        from: latestBlocknumber + 1,
-        to: latestBlockNum,
-      });
+    const filter = connex.thor.filter("event", [{address: SC_ADDRESS}]).range({
+      unit: "block",
+      from: latestBlocknumber + 1,
+      to: latestBlockNum,
+    });
 
     //Get events from the filter
     let offset = 0;

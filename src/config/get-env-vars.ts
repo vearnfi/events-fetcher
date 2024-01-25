@@ -1,7 +1,7 @@
-import type { ChainId } from "@vearnfi/config";
-import { chains } from "@vearnfi/config"
+import type {ChainId} from "@vearnfi/config";
+import {chains} from "@vearnfi/config";
 
-const chainIds = Object.keys(chains)
+const chainIds = Object.keys(chains);
 // ^ For some reason I cannot import chainIds directly from @vearnfi/config :S
 
 /**
@@ -17,7 +17,7 @@ export function getEnvVars() {
     throw new Error("Missing env var CHAIN_ID");
   }
   if (!chainIds.includes(chainId)) {
-    throw new Error("Invalid CHAIN_ID value")
+    throw new Error("Invalid CHAIN_ID value");
   }
 
   return {
