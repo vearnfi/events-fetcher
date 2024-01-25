@@ -16,7 +16,7 @@ const app = express();
 
 app.use(cors());
 
-const fetcher = makeFetcher(connect, api)
+const fetcher = makeFetcher(connect, api);
 
 app.listen(process.env.PORT || 5000, () => {
   fetcher(() => false);

@@ -56,7 +56,7 @@ describe("Api class", () => {
   });
 
   describe("forwardEvents", () => {
-    it("returns status 200 when the events are correctly sent", async () => {
+    it("returns status 201 when the events are correctly sent", async () => {
       // Arrange
       const expected = 201;
       const response = {
@@ -67,6 +67,26 @@ describe("Api class", () => {
 
       // Act
       const actual = await api.forwardEvents("APPROVAL", approvalEvents.events);
+
+      // Assert
+      expect(expected).toEqual(actual);
+      expect(axios.post).toHaveBeenCalledTimes(1);
+    });
+
+    it("returns status 200 when head is correctly sent", async () => {
+      // Arrange
+      const expected = 1234;
+      const response = {
+        status: expected,
+        statusText: "OK",
+        data: {
+          lastBlockNumber: expected,
+        },
+      };
+      (axios.post as jest.Mock).mockResolvedValue(response);
+
+      // Act
+      const actual = await api.setHead(expected);
 
       // Assert
       expect(expected).toEqual(actual);

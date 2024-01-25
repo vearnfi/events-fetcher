@@ -18,7 +18,7 @@ describe("fetcher", () => {
 
   it("fetches and forwards all type of events to the remote service", async () => {
     // Arrange
-    expect.assertions(8)
+    expect.assertions(8);
     const events: RawEvent[][] = [approvalEvents, configEvents, swapEvents].map(
       (json) => json.events,
     );
@@ -31,7 +31,7 @@ describe("fetcher", () => {
       getHead: mockGetHead,
       forwardEvents: mockForwardEvents,
     });
-    const fetcher = makeFetcher(mockConnect, mockApi)
+    const fetcher = makeFetcher(mockConnect, mockApi);
 
     // Act
     await fetcher((cycles) => cycles >= 1); // test one loop only
