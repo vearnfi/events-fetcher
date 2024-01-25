@@ -2,9 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import {makeFetcher} from "./fetcher";
-import {connect} from "./utils";
-import {api} from "./api";
+import {getEvents} from "./controllers";
 
 /**
  * Entry point. Instantiate a node express server and call the fetcher
@@ -16,8 +14,6 @@ const app = express();
 
 app.use(cors());
 
-const fetcher = makeFetcher(connect, api);
-
 app.listen(process.env.PORT || 5000, () => {
-  fetcher(() => false);
+  getEvents(() => false);
 });

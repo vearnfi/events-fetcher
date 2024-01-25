@@ -8,6 +8,7 @@ const chainIds = Object.keys(chains);
  * Utility function to read and validate environment variables.
  * @return {{
  * CHAIN_ID: ChainId,
+ * DISCORD_WEBHOOK_URL: string,
  * }} Environment variables
  */
 export function getEnvVars() {

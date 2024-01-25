@@ -1,6 +1,6 @@
 import {getChainData} from "@vearnfi/config";
 import {getEnvVars} from "./get-env-vars";
 
-const {chainId} = getEnvVars();
+const {CHAIN_ID} = getEnvVars();
 
-export const chain = getChainData(chainId);
+export const chain = getChainData(CHAIN_ID);

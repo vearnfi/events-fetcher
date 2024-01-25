@@ -8,7 +8,7 @@ export type Logger = ({
   data,
 }: {
   status: "SUCCESS" | "ERROR";
-  data: any;
+  data: unknown;
 }) => Promise<void>;
 
 export async function logger({
@@ -17,7 +17,7 @@ export async function logger({
 }: {
   status: "SUCCESS" | "ERROR";
   data: unknown;
-}) {
+}): Promise<void> {
   try {
     await axios.post(DISCORD_WEBHOOK_URL, {
       content: JSON.stringify({status, data}, null, 2),

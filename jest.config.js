@@ -8,7 +8,7 @@ module.exports = {
     "^axios$": require.resolve("axios"),
   },
   modulePathIgnorePatterns: [
-    "<rootDir>/lib/",
+    "<rootDir>/dist/",
     "<rootDir>/src/__tests__/fixtures",
   ],
   verbose: true,

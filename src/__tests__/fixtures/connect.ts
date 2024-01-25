@@ -11,13 +11,13 @@ import type {Connect, Connection} from "../../utils/connect";
 export function makeFakeConnect(
   chain: ChainData,
   events: RawEvent[][],
-  initialBlock: number,
+  nextBlock: number,
 ): Connect {
   return async function () {
     const connect = makeConnect(chain);
     const connection = await connect();
 
-    let blockCount = initialBlock - 1;
+    let blockCount = nextBlock - 1;
     let eventCount = 0;
 
     return Promise.resolve({
