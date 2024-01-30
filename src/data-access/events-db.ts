@@ -18,7 +18,7 @@ export function makeEventsDb(chain: ChainData): EventsDb {
     events: RawEvent[],
   ): Promise<RawEvent[]> {
     const response = await axios
-      .post(`${chain.registerEventsEndpoint}?eventType=${eventType}`, events, {
+      .post(`${chain.registerEventsEndpoint}?eventType=${eventType}`, {events}, {
         headers: {
           "Content-Type": "application/json",
         },
