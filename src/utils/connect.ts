@@ -1,53 +1,41 @@
-import { Framework } from '@vechain/connex-framework';
-import { Driver, SimpleNet } from '@vechain/connex-driver'
-import {getNetworkConfig } from '../config/index';
-import type { NetworkConfig} from '../config/index';
-import {getEnvVars} from '../config/get-env-vars'
-import {ConnexUtils } from '../blockchain/connex-utils'
-import type {Contract } from '../blockchain/connex-utils'
-import * as vthoArtifact from "../abis/Energy.json";
-import * as traderArtifact from "../abis/Trader.json";
-import {AbiItem} from "../typings/types";
+import {Framework} from "@vechain/connex-framework";
+import {Driver, SimpleNet} from "@vechain/connex-driver";
+import type {ChainData} from "@vearnfi/config";
+import {wrapConnex} from "@vearnfi/wrapped-connex";
+import type {WrappedConnex, Contract, AbiItem} from "@vearnfi/wrapped-connex";
+import * as vthoArtifact from "../artifacts/Energy.json";
+import * as traderArtifact from "../artifacts/Trader.json";
 
 export type Connection = {
-  networkConfig: NetworkConfig,
-  connexUtils: ConnexUtils,
+  wConnex: WrappedConnex;
   /** Reference to the VTHO contract. */
-  vtho: Contract,
+  vtho: Contract;
   /** Reference to the Trader contract. */
-  trader: Contract,
-}
+  trader: Contract;
+};
 
-const {CHAIN_ID} = getEnvVars();
+export type Connect = () => Promise<Connection>;
 
-const networkConfig = getNetworkConfig(CHAIN_ID);
-
-export async function connect(): Promise<Connection | undefined> {
-  try {
-    const net = new SimpleNet(networkConfig.rpc)
+export function makeConnect(chain: ChainData): Connect {
+  return async function connect(): Promise<Connection> {
+    const net = new SimpleNet(chain.rpc[0]);
     const driver = await Driver.connect(net);
     const connex = new Framework(driver);
-    const connexUtils = new ConnexUtils(connex);
+    const wConnex = wrapConnex(connex);
 
     // Create a reference to the `VTHO` contract.
-    const vtho = connexUtils.getContract(
-      vthoArtifact.abi as AbiItem[],
-      networkConfig.vtho,
-    );
+    const vtho = wConnex.getContract(vthoArtifact.abi as AbiItem[], chain.vtho);
 
     // Create a reference to the `Trader` contract.
-    const trader = connexUtils.getContract(
+    const trader = wConnex.getContract(
       traderArtifact.abi as AbiItem[],
-      networkConfig.trader,
+      chain.trader,
     );
 
     return {
-      networkConfig,
-      connexUtils,
+      wConnex,
       vtho,
       trader,
     };
-  } catch (error) {
-    return;
-  }
+  };
 }

@@ -2,7 +2,8 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       PORT?: string;
-      CHAIN_ID: 100010 | 100009;
+      CHAIN_ID?: string;
+      DISCORD_WEBHOOK_URL?: string;
     }
   }
 
