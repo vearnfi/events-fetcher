@@ -3,10 +3,18 @@ import type {
   Filter,
   Callback,
   RawEvent,
+  Contract,
 } from "@vearnfi/wrapped-connex";
 import type {ChainData} from "@vearnfi/config";
-import {makeConnect} from "../../utils/connect";
 import type {Connect, Connection} from "../../utils/connect";
+
+function fakeFilter(): Filter {
+  return {
+    order: (order: "asc" | "desc") => ({
+      range: ({unit, from, to}: {unit: string, from: number, to: number}) => {},
+    })
+  } as Filter
+}
 
 /**
  * Simulate a tick increase and events fetching with every new
@@ -21,17 +29,12 @@ export function makeFakeConnect(
   events: RawEvent[][],
   nextBlock: number,
 ): Connect {
-  return async function (): Promise<Connection> {
-    const connect = makeConnect(chain);
-    const connection = await connect();
-
+  return async function fakeConnect(): Promise<Connection> {
     let blockCount = nextBlock - 1;
     let eventCount = 0;
 
     return Promise.resolve({
-      ...connection,
       wConnex: Object.freeze({
-        ...connection.wConnex,
         getTicker: () => ({
           next: async () => {
             blockCount++;
@@ -51,6 +54,25 @@ export function makeFakeConnect(
           eventCount++;
         },
       }) as WrappedConnex,
-    } as Connection);
+      vtho: {
+        getAddress: () => chain.vtho,
+        events: {
+          Approval: {
+            filter: fakeFilter,
+          }
+        }
+      } as unknown as Contract,
+      trader: {
+        getAddress: () => chain.trader,
+        events: {
+          Config: {
+            filter: fakeFilter,
+          },
+          Swap: {
+            filter: fakeFilter,
+          }
+        }
+      } as unknown as Contract
+    });
   };
 }
