@@ -2,9 +2,9 @@ import type {Filter} from "@vearnfi/wrapped-connex";
 import type {EventType} from "../typings/types";
 import {EVENT_TYPES} from "../typings/types";
 import type {Connect} from "../utils/connect";
-import type { CountersDb, EventsDb } from "../data-access";
+import type {CountersDb, EventsDb} from "../data-access";
 
-export type Stop = (cycles: number) => boolean
+export type Stop = (cycles: number) => boolean;
 export type FetchEvents = (stop: Stop) => Promise<void>;
 
 /**

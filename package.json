@@ -12,7 +12,7 @@
     "format": "prettier --config .prettierrc --write .",
     "start": "node ./dist/index.js",
     "test": "jest --watchAll",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage --detectOpenHandles"
   },
   "author": "federodes",
   "license": "ISC",

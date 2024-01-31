@@ -36,7 +36,11 @@ describe("fetch events use case", () => {
     const mockEventsDb: EventsDb = Object.freeze({
       insert: mockInsertEvents,
     });
-    const fetchEvents = makeFetchEvents(mockConnect, mockCountersDb, mockEventsDb);
+    const fetchEvents = makeFetchEvents(
+      mockConnect,
+      mockCountersDb,
+      mockEventsDb,
+    );
 
     // Act
     await fetchEvents((blockNumber: number) => blockNumber >= head + 1); // test one loop only
@@ -73,7 +77,11 @@ describe("fetch events use case", () => {
     const mockEventsDb: EventsDb = Object.freeze({
       insert: mockInsertEvents,
     });
-    const fetchEvents = makeFetchEvents(mockConnect, mockCountersDb, mockEventsDb);
+    const fetchEvents = makeFetchEvents(
+      mockConnect,
+      mockCountersDb,
+      mockEventsDb,
+    );
 
     // Act
     await fetchEvents((blockNumber: number) => blockNumber >= head + 1); // test one loop only

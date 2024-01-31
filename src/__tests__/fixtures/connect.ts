@@ -8,12 +8,20 @@ import type {ChainData} from "@vearnfi/config";
 import {makeConnect} from "../../utils/connect";
 import type {Connect, Connection} from "../../utils/connect";
 
+/**
+ * Simulate a tick increase and events fetching with every new
+ * function call.
+ * @param {ChainData} chain Current chain.
+ * @param {RawEvent[][]} events Set of events to be returned by connex.
+ * @param {number} nextBlock Next block to be returned by the fake connex ticker.
+ * @returns
+ */
 export function makeFakeConnect(
   chain: ChainData,
   events: RawEvent[][],
   nextBlock: number,
 ): Connect {
-  return async function () {
+  return async function (): Promise<Connection> {
     const connect = makeConnect(chain);
     const connection = await connect();
 

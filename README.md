@@ -1,111 +1,24 @@
-# connex-sync-event-fetch Module
+# @vearnfi/events-fetcher
 
-connex-sync-event-fetch Module is a module that implements server environment for syncing event fetching using connex in VeChain.
-This is most useful for backend developers who wants to fetch and handle events triggered in Smart Contract in VeChain.
-The backend server is based on Express JS + Node JS.
-Since it is working on VeChain, we recommend to use connex rather than Web3.js to connect to VeChain node.
+This service listens to events associated with the vearn.finance protocol and forwards them to the main backend.
 
-# How to implement
+## Acknowledgement
 
-This module implements the following logic to update the attribute of metadata in Pinata.
+This service was inspired by the excellent work of Exo Worlds [Exo Worlds Connex Sync Event Fetch](https://bitbucket.org/exoworldsnft/connex-sync-event-fetch/src/master/)
 
-1. Get the latest Blocknumber that was previously saved in the internal db
-2. Use endless loop for fetching events and repeat it every 10 seconds or custom delay.
-3. In the loop, following logic is required.
-   - Filter the events from the Chain with "from" and "to" parameters using connex.
-   - Get the events within the range of "from" block and "to" block. Refer to the code in index.js.
-   - Then loop the gained events array and use conditions to find a specific event occured.
-   - Set custom delay of repeated loop.
+## How it works
 
-## Packages
+1. Retrieves the latest block number previously saved in the database.
+2. Utilizes an endless loop for fetching events, repeating every time a new block is added to the chain.
+3. In the loop, the following logic applies:
+   - Filters events from the blockchain with "from" and "to" parameters using connex.
+   - Retrieves events within the range of "from" block and "to" block. Refer to the code in /use-cases/fetcher.ts.
+   - Loops through the gained events array and stores them in the database.
+   - Every 360 blocks (approximately 1 hour), updates the latest block number in the database.
 
-As it works with connex to sync the backend and the VeChain node, it always works along with the package [@vechain/connex-driver, @vechain/connex-framework](https://github.com/vechain/connex/tree/master/packages/driver).
+## Architecture
 
-```sh
-npm i @vechain/connex-framework @vechain/connex-driver
-```
-
-## Code Structure
-
-To create a Framework instance:
-
-```typescript
-import {Framework} from "@vechain/connex-framework";
-import {Driver, SimpleNet} from "@vechain/connex-driver";
-
-//Create a connex instance
-const net = new SimpleNet("https://testnet.veblocks.net/");
-const driver = await Driver.connect(net, wallet);
-const connex = new Framework(driver);
-
-// Get latest Block number in the Internal DB
-let latestBlocknumber = await getHead();
-
-for (;;) {
-  await new Promise(async (resolve, reject) => {
-    //Filter the events from the latest event fetched to the latest event triggered in the chain
-    //latestBlocknumber: Latest Block number in the Internal DB
-    //latestBlockNum: Latest Block number in Chain
-    const filter = connex.thor.filter("event", [{address: SC_ADDRESS}]).range({
-      unit: "block",
-      from: latestBlocknumber + 1,
-      to: latestBlockNum,
-    });
-
-    //Get events from the filter
-    let offset = 0;
-    let events = [];
-    const decoder = newEventsDecoder(SC_ABI);
-    for (;;) {
-      const newOutput = await filter
-        .apply(offset, step)
-        .then((events) => events.map((x) => decoder.decode(x)));
-      events = [...events, ...newOutput];
-      if (newOutput.length == 0) {
-        break;
-      }
-      offset += step;
-    }
-
-    //Do actions
-    for (let i = 0; i < events.length; i++) {
-      console.log("New Event: ", events[i].event);
-      if (events[i].event === "EventName") {
-        //Do some actions when this event triggered. This action must include inserting event into internal DB so that next time you can fetch latest event from DB
-        console.log("event happened");
-      }
-    }
-    resolve();
-  });
-
-  //Create a Delay for block creation
-  await new Promise((resolve) => {
-    setTimeout(resolve, 10 * 1000);
-  });
-}
-```
-
-# Usage / Installation
-
-- Installation
-
-  ```sh
-
-  npm i connex-sync-event-fetch
-
-  ```
-
-- Usage
-
-  ```typescript
-  var myBackend = require("connex-sync-event-fetch");
-  myBackend.syncBackend();
-  ```
-
-# Warning
-
-This framework should be modified before using it.
-Insert your Smart Contract Address and ABI, Insert your logic to get events.
+We employ clean architecture to organize the codebase, consisting of **entities** (enterprise business rules), **use-cases** (interactions between entities), and **controllers/adaptors** (isolating use cases from frameworks). For an in-depth explanation of how it works, please refer to [Using Clean Architecture for Microservice APIs in Node.js with MongoDB and Express3](https://youtu.be/CnailTcJV_U?si=NTq4-6Zh-ZaAhHi3)
 
 ## License
 
@@ -113,32 +26,21 @@ This package is licensed under the
 [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.html), also included
 in _LICENSE_ file in the repository.
 
-## Google Cloud Deploy
+## Deployment
+
+1. Create an image on the local computer and push it to Docker Hub:
 
 ```
-gcloud app deploy
-```
-
-## Google Cloud Engine Logs
-
-```
-gcloud app logs tail -s default
-```
-
-## Deploy to production server
-
-1. Create image in local computer and push it to docker hub
-
-```
-
 docker push
 ```
 
-2. ssh into server
-1. Clone repo
-1. Login into docker hub
-1. Create container from image:
+2. SSH into the server.
+3. Clone the repository.
+4. Log into Docker Hub.
+5. Create a container from the image:
 
 ```
 docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml up -d
 ```
+
+For an in-depth explanation of how it works, please refer to [Learn Docker - DevOps with Node.js & Express](https://youtu.be/9zUHg7xjIqQ?si=sNNowbp_vrTIkq-O)

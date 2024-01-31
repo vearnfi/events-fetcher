@@ -18,11 +18,15 @@ export function makeEventsDb(chain: ChainData): EventsDb {
     events: RawEvent[],
   ): Promise<RawEvent[]> {
     const response = await axios
-      .post(`${chain.registerEventsEndpoint}?eventType=${eventType}`, {events}, {
-        headers: {
-          "Content-Type": "application/json",
+      .post(
+        `${chain.registerEventsEndpoint}?eventType=${eventType}`,
+        {events},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      })
+      )
       .catch((error: AxiosError) => {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx

@@ -13,7 +13,9 @@ describe("get events controller", () => {
   it("forwards errors to logger", async () => {
     // Arrange
     expect.assertions(3);
-   const mockFetchEvents = () => { throw new Error("Bam!") }
+    const mockFetchEvents = () => {
+      throw new Error("Bam!");
+    };
     const getEvents = makeGetEvents(mockFetchEvents, mockLogger);
 
     // Act

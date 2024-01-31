@@ -4,9 +4,9 @@ describe("getEnvVars", () => {
   it("returns all environment variables", () => {
     // Arrange
     const chainId = 100010;
-    const discordUrl =  "https://some-url.com"
+    const discordUrl = "https://some-url.com";
     process.env.CHAIN_ID = chainId.toString();
-    process.env.DISCORD_WEBHOOK_URL = discordUrl
+    process.env.DISCORD_WEBHOOK_URL = discordUrl;
 
     // Act
     const actual = getEnvVars();
@@ -32,7 +32,7 @@ describe("getEnvVars", () => {
     expect(() => getEnvVars()).toThrow("Invalid CHAIN_ID value");
   });
 
-    it("throws if DISCORD_WEBHOOK_URL is NOT set as an env var", () => {
+  it("throws if DISCORD_WEBHOOK_URL is NOT set as an env var", () => {
     // Arrange
     process.env.CHAIN_ID = "100010";
     delete process.env.DISCORD_WEBHOOK_URL;

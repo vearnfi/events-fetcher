@@ -4,6 +4,7 @@ module.exports = {
   testEnvironment: "node",
   clearMocks: true,
   coverageProvider: "v8",
+  collectCoverageFrom: ["src/**/*.ts"],
   moduleNameMapper: {
     "^axios$": require.resolve("axios"),
   },

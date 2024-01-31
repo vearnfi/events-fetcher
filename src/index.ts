@@ -5,8 +5,8 @@ import cors from "cors";
 import {getEvents} from "./controllers";
 
 /**
- * Entry point. Instantiate a node express server and call the fetcher
- * function to start fetching and forwarding events from the blockchain
+ * Entry point. Instantiate a node express server and call the getEvents
+ * controller to start fetching and forwarding events from the blockchain
  * to a remote service.
  */
 

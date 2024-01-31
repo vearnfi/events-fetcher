@@ -1,5 +1,5 @@
 import {chain} from "../config";
-import { countersDb, eventsDb } from "../data-access";
+import {countersDb, eventsDb} from "../data-access";
 import {makeConnect} from "../utils/connect";
 import {makeFetchEvents} from "./fetch-events";
 
