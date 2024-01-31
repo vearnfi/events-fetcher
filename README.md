@@ -1,4 +1,4 @@
-[![test](https://github.com/vearnfi/events-fetcher/workflows/test/badge.svg)](https://github.com/vearnfi/events-fetcher/actions/workflows/test.yml)
+[![test](https://github.com/vearnfi/events-fetcher/workflows/test/badge.svg)](https://github.com/vearnfi/events-fetcher/actions/workflows/test.yml) [![coverage](https://coveralls.io/repos/github/vearnfi/events-fetcher/badge.svg)](https://coveralls.io/github/vearnfi/events-fetcher)
 
 # @vearnfi/events-fetcher
 
