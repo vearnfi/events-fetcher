@@ -1,3 +1,5 @@
+[![test](https://github.com/vearnfi/events-fetcher/workflows/test/badge.svg)](https://github.com/vearnfi/events-fetcher/workflows/test.yml)
+
 # @vearnfi/events-fetcher
 
 This service listens to events associated with the vearn.finance protocol and forwards them to the backend.

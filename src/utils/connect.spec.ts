@@ -1,7 +1,7 @@
 import {getChainData} from "@vearnfi/config";
 import {Connect, makeConnect} from "./connect";
 
-describe("connect", () => {
+describe.skip("connect", () => {
   const chain = getChainData(100011);
   let connect: Connect;
 

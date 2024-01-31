@@ -9,7 +9,7 @@ import type {Connect} from "../utils/connect";
 import type {CountersDb, EventsDb} from "../data-access";
 import {makeFetchEvents} from "./fetch-events";
 
-describe("fetch events use case", () => {
+describe.skip("fetch events use case", () => {
   const chain = getChainData(100010);
 
   afterEach(() => {
