@@ -7,5 +7,5 @@ services:
     environment:
       - NODE_ENV=production
       - CHAIN_ID=100009
-      - DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1199940499834945626/H_Rp0ghYdbzcMH4HFs7KHbTR1ih6iOEVxO2lg9Fbj2uRVOBNVWZWWEBhbVMfP77eTktU
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
     command: node dist/index.js
