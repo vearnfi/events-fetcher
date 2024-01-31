@@ -11,7 +11,7 @@
     "lint-and-fix": "eslint . --ext .ts --fix",
     "format": "prettier --config .prettierrc --write .",
     "start": "node ./dist/index.js",
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "test:watch": "jest --watchAll --detectOpenHandles",
     "coverage": "jest --coverage --detectOpenHandles"
   },
