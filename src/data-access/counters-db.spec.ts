@@ -10,6 +10,7 @@ describe("counters db", () => {
 
   it("fetches (finds) the head from the remote service", async () => {
     // Arrange
+    expect.assertions(2)
     const expected = 12345;
     const response = {
       status: 200,
@@ -30,6 +31,7 @@ describe("counters db", () => {
 
   it("throws when there is an error fetching the head", async () => {
     // Arrange
+    expect.assertions(1);
     const error = {
       response: {
         status: 500,
@@ -40,7 +42,6 @@ describe("counters db", () => {
     (axios.get as jest.Mock).mockRejectedValue(error);
 
     // Act + Assert
-    expect.assertions(1);
     await expect(countersDb.find()).rejects.toThrow(
       "Error fetching head from remote service. Status: 500",
     );
@@ -48,6 +49,7 @@ describe("counters db", () => {
 
   it("updates the head", async () => {
     // Arrange
+    expect.assertions(2)
     const expected = 1234;
     const response = {
       status: expected,
@@ -64,5 +66,23 @@ describe("counters db", () => {
     // Assert
     expect(actual).toEqual(expected);
     expect(axios.post).toHaveBeenCalledTimes(1);
+  });
+
+    it("throws when there is an error updating the head", async () => {
+    // Arrange
+    expect.assertions(1);
+    const error = {
+      response: {
+        status: 500,
+        statusText: "Internal Server Error",
+        data: "Internal Server Error",
+      },
+    };
+    (axios.post as jest.Mock).mockRejectedValue(error);
+
+    // Act + Assert
+    await expect(countersDb.update(1234)).rejects.toThrow(
+      "Error setting head on remote service. Status: 500",
+    );
   });
 });
