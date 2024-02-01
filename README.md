@@ -33,16 +33,32 @@ in _LICENSE_ file in the repository.
 1. Create an image on the local computer and push it to Docker Hub:
 
 ```
-docker push
+>> make [env]-build
+>> docker push [username]/events-fetcher
 ```
 
 2. SSH into the server.
-3. Clone the repository.
-4. Log into Docker Hub.
-5. Create a container from the image:
+3. Install docker:
 
 ```
-docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml up -d
+>> curl -fsSL https://get.docker.com -o install-docker.sh
+>> sh install-docker.sh
+```
+
+4. Install docker-compose:
+
+```
+>> curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+>> sudo chmod +x /usr/local/bin/docker-compose
+```
+
+5. Clone the repository.
+6. Log into Docker Hub.
+7. Create a container from the image:
+
+```
+>> docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml pull
+>> docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml up -d
 ```
 
 For an in-depth explanation of how it works, please refer to [Learn Docker - DevOps with Node.js & Express](https://youtu.be/9zUHg7xjIqQ?si=sNNowbp_vrTIkq-O)
