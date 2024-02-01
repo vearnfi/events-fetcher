@@ -52,7 +52,7 @@ export function makeFetchEvents(
 
         await wConnex.fetchEvents(filter, async (events) => {
           await eventsDb.insert(eventType, events);
-        }, 5);
+        });
       }
 
       lastBlockNumber = currentBlock.number;
