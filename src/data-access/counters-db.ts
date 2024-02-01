@@ -35,7 +35,7 @@ export function makeCountersDb(chain: ChainData): CountersDb {
    */
   async function update(lastBlockNumber: number): Promise<number> {
     const response = await axios
-      .post(chain.setHeadEndpoint, lastBlockNumber, {
+      .post(chain.setHeadEndpoint, {lastBlockNumber}, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -44,7 +44,7 @@ export function makeCountersDb(chain: ChainData): CountersDb {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         throw new Error(
-          `Error fetching head from remote service. Status: ${error?.response?.status}`,
+          `Error setting head on remote service. Status: ${error?.response?.status}`,
         );
       });
 
