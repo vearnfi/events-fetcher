@@ -52,7 +52,15 @@ in _LICENSE_ file in the repository.
 >> sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-5. Clone the repository.
+5. Set you env vars.
+6. Clone the repository:
+
+```
+>> mkdir app
+>> cd app
+>> git clone https://github.com/vearnfi/events-fetcher.git .
+```
+
 6. Log into Docker Hub.
 7. Create a container from the image:
 
