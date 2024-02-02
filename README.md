@@ -1,4 +1,4 @@
-[![test](https://github.com/vearnfi/events-fetcher/workflows/test/badge.svg)](https://github.com/vearnfi/events-fetcher/actions/workflows/test.yml) [![coverage](https://coveralls.io/repos/github/vearnfi/events-fetcher/badge.svg)](https://coveralls.io/github/vearnfi/events-fetcher)
+[![test](https://github.com/vearnfi/events-fetcher/workflows/test/badge.svg)](https://github.com/vearnfi/events-fetcher/actions/workflows/test.yml) [![coverage](https://coveralls.io/repos/github/vearnfi/events-fetcher/badge.svg)](https://coveralls.io/github/vearnfi/events-fetcher) [![Maintainability](https://api.codeclimate.com/v1/badges/32602854cda29c7727e8/maintainability)](https://codeclimate.com/github/vearnfi/events-fetcher/maintainability)
 
 # @vearnfi/events-fetcher
 
