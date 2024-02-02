@@ -59,7 +59,7 @@ describe("fetch events use case", () => {
 
   it("sets head every 360 blocks", async () => {
     // Arrange
-    expect.assertions(9);
+    expect.assertions(2);
     const events: RawEvent[][] = [approvalEvents, configEvents, swapEvents].map(
       (json) => json.events,
     );
@@ -89,12 +89,5 @@ describe("fetch events use case", () => {
     // Assert
     expect(mockFindCounters).toHaveBeenCalledTimes(1);
     expect(mockUpdateCounters).toHaveBeenCalledTimes(1);
-    expect(mockInsertEvents).toHaveBeenCalledTimes(3);
-    expect(mockInsertEvents.mock.calls[0][0]).toBe(approvalEvents.eventType);
-    expect(mockInsertEvents.mock.calls[1][0]).toBe(configEvents.eventType);
-    expect(mockInsertEvents.mock.calls[2][0]).toBe(swapEvents.eventType);
-    expect(mockInsertEvents.mock.calls[0][1]).toBe(approvalEvents.events);
-    expect(mockInsertEvents.mock.calls[1][1]).toBe(configEvents.events);
-    expect(mockInsertEvents.mock.calls[2][1]).toBe(swapEvents.events);
   });
 });

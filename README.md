@@ -70,3 +70,9 @@ in _LICENSE_ file in the repository.
 ```
 
 For an in-depth explanation of how it works, please refer to [Learn Docker - DevOps with Node.js & Express](https://youtu.be/9zUHg7xjIqQ?si=sNNowbp_vrTIkq-O)
+
+8. Stream container logs :)
+
+```
+>> docker container logs --follow CONTAINER
+```
