@@ -8,15 +8,15 @@ This service listens to events associated with the vearn.finance protocol and fo
 
 This service was inspired by the excellent work of Exo Worlds [Exo Worlds Connex Sync Event Fetch](https://bitbucket.org/exoworldsnft/connex-sync-event-fetch/src/master/)
 
-## How it works
+## Overview
 
 1. Retrieves the latest block number previously saved in the database.
 2. Utilizes an endless loop for fetching events, repeating every time a new block is added to the chain.
 3. In the loop, the following logic applies:
-   - Filters events from the blockchain with "from" and "to" parameters using connex.
-   - Retrieves events within the range of "from" block and "to" block. Refer to the code in /use-cases/fetcher.ts.
-   - Loops through the gained events array and stores them in the database.
-   - Every 360 blocks (approximately 1 hour), updates the latest block number in the database.
+- Filters events from the blockchain with "from" and "to" parameters using connex.
+- Retrieves events within the range of "from" block and "to" block. Refer to the code in /use-cases/fetcher.ts.
+- Loops through the gained events array and stores them in the database.
+- Every 360 blocks (approximately 1 hour), updates the latest block number in the database.
 
 ## Architecture
 
@@ -33,40 +33,40 @@ in _LICENSE_ file in the repository.
 1. Create an image on the local computer and push it to Docker Hub:
 
 ```
->> make [env]-build
->> docker push [username]/events-fetcher
+make [env]-build
+docker push [username]/events-fetcher
 ```
 
 2. SSH into the server.
 3. Install docker:
 
 ```
->> curl -fsSL https://get.docker.com -o install-docker.sh
->> sh install-docker.sh
+curl -fsSL https://get.docker.com -o install-docker.sh
+sh install-docker.sh
 ```
 
 4. Install docker-compose:
 
 ```
->> curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
->> sudo chmod +x /usr/local/bin/docker-compose
+curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 5. Set you env vars.
 6. Clone the repository:
 
 ```
->> mkdir app
->> cd app
->> git clone https://github.com/vearnfi/events-fetcher.git .
+mkdir app
+cd app
+git clone https://github.com/vearnfi/events-fetcher.git .
 ```
 
 6. Log into Docker Hub.
 7. Create a container from the image:
 
 ```
->> docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml pull
->> docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml up -d
+docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml pull
+docker-compose -f docker-compose.yaml -f docker-compose.[stag|prod].yaml up -d
 ```
 
 For an in-depth explanation of how it works, please refer to [Learn Docker - DevOps with Node.js & Express](https://youtu.be/9zUHg7xjIqQ?si=sNNowbp_vrTIkq-O)
@@ -74,5 +74,5 @@ For an in-depth explanation of how it works, please refer to [Learn Docker - Dev
 8. Stream container logs :)
 
 ```
->> docker container logs --follow CONTAINER
+docker container logs --follow CONTAINER
 ```
