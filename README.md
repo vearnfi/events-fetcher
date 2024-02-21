@@ -22,6 +22,19 @@ This service was inspired by the excellent work of Exo Worlds [Exo Worlds Connex
 
 We employ clean architecture to organize the codebase, consisting of **entities** (enterprise business rules), **use-cases** (interactions between entities), and **controllers/adaptors** (isolating use cases from frameworks). For an in-depth explanation of how it works, please refer to [Using Clean Architecture for Microservice APIs in Node.js with MongoDB and Express3](https://youtu.be/CnailTcJV_U?si=NTq4-6Zh-ZaAhHi3)
 
+## Getting started
+
+Clone the repo and set your environment variables
+
+```
+nvm use 18
+git clone https://github.com/vearnfi/events-fetcher
+cd events-fetcher
+npm i
+cp .env.example .env
+npm run dev
+```
+
 ## Testing
 
 The app is covered by unit tests using jest.
