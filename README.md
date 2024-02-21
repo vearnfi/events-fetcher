@@ -2,7 +2,7 @@
 
 # @vearnfi/events-fetcher
 
-This service listens to events associated with the vearn.finance protocol and forwards them to the backend.
+This service listens to events associated with the vearn.finance protocol and forwards them to the [main backend](https://github.com/vearnfi/firebase).
 
 ## Acknowledgement
 
