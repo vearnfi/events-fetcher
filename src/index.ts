@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
+import {errorHandler} from "./utils/error-handler";
 import {getEvents} from "./controllers";
 
 /**
@@ -13,6 +14,9 @@ import {getEvents} from "./controllers";
 const app = express();
 
 app.use(cors());
+
+// Catch all errors
+app.use(errorHandler);
 
 app.listen(process.env.PORT || 5000, () => {
   getEvents(() => false);

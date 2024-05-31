@@ -19,6 +19,9 @@ export function makeGetEvents(
         status: "ERROR",
         data: `getEvents: ${error?.message || "Unknown error occurred"}`,
       });
+
+      // Bubble error up
+      throw new Error(error);
     }
   };
 }

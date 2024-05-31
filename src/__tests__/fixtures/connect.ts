@@ -11,9 +11,9 @@ import type {Connect, Connection} from "../../utils/connect";
 function fakeFilter(): Filter {
   return {
     order: (order: "asc" | "desc") => ({
-      range: ({unit, from, to}: {unit: string, from: number, to: number}) => {},
-    })
-  } as Filter
+      range: ({unit, from, to}: {unit: string; from: number; to: number}) => {},
+    }),
+  } as Filter;
 }
 
 /**
@@ -59,8 +59,8 @@ export function makeFakeConnect(
         events: {
           Approval: {
             filter: fakeFilter,
-          }
-        }
+          },
+        },
       } as unknown as Contract,
       trader: {
         getAddress: () => chain.trader,
@@ -70,9 +70,9 @@ export function makeFakeConnect(
           },
           Swap: {
             filter: fakeFilter,
-          }
-        }
-      } as unknown as Contract
+          },
+        },
+      } as unknown as Contract,
     });
   };
 }
