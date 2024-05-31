@@ -12,14 +12,16 @@ describe("get events controller", () => {
 
   it("forwards errors to logger", async () => {
     // Arrange
-    expect.assertions(3);
+    expect.assertions(4);
     const mockFetchEvents = () => {
       throw new Error("Bam!");
     };
     const getEvents = makeGetEvents(mockFetchEvents, mockLogger);
 
     // Act
-    await getEvents(() => false); // infinite loop
+    await expect(getEvents(() => false /* Infinite loop */)).rejects.toThrow(
+      "Bam!",
+    );
 
     // Assert
     expect(mockLogger.mock.calls).toHaveLength(1);
