@@ -1,12 +1,13 @@
 # Shared configuration across environments.
 version: "3.7"
+# List of containers
 services:
-  # ^ List of containers
+  # Container name
   connex-fetcher:
-    # ^ Container name
     build:
       context: .
       dockerfile: Dockerfile
     image: vearnfi/events-fetcher
     environment:
       - PORT=5000
+    restart: unless-stopped

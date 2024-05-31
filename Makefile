@@ -27,3 +27,9 @@ prod-build:
 
 down:
 		docker-compose down
+
+log:
+		docker container logs --follow app-connex-fetcher-1
+
+dev-log:
+		docker container logs --follow connex-sync-event-fetch-connex-fetcher-1
