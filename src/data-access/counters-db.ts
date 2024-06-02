@@ -1,6 +1,6 @@
 import axios from "axios";
 import type {AxiosError} from "axios";
-import {ChainData} from "@vearnfi/config";
+import type {ChainData} from "@vearnfi/config";
 
 export type CountersDb = Readonly<{
   find: () => Promise<number>;

@@ -1,5 +1,5 @@
 import axios, {AxiosError} from "axios";
-import {ChainData} from "@vearnfi/config";
+import type {ChainData} from "@vearnfi/config";
 import type {RawEvent} from "@vearnfi/wrapped-connex";
 import type {EventType} from "../typings/types";
 
