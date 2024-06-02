@@ -13,6 +13,7 @@ This service was inspired by the excellent work of Exo Worlds [Exo Worlds Connex
 1. Retrieves the latest block number previously saved in the database.
 2. Utilizes an endless loop for fetching events, repeating every time a new block is added to the chain.
 3. In the loop, the following logic applies:
+
 - Filters events from the blockchain with "from" and "to" parameters using connex.
 - Retrieves events within the range of "from" block and "to" block. Refer to the code in /use-cases/fetcher.ts.
 - Loops through the gained events array and stores them in the database.

@@ -10,7 +10,7 @@ describe("counters db", () => {
 
   it("fetches (finds) the head from the remote service", async () => {
     // Arrange
-    expect.assertions(2)
+    expect.assertions(2);
     const expected = 12345;
     const response = {
       status: 200,
@@ -49,7 +49,7 @@ describe("counters db", () => {
 
   it("updates the head", async () => {
     // Arrange
-    expect.assertions(2)
+    expect.assertions(2);
     const expected = 1234;
     const response = {
       status: expected,
@@ -68,7 +68,7 @@ describe("counters db", () => {
     expect(axios.post).toHaveBeenCalledTimes(1);
   });
 
-    it("throws when there is an error updating the head", async () => {
+  it("throws when there is an error updating the head", async () => {
     // Arrange
     expect.assertions(1);
     const error = {

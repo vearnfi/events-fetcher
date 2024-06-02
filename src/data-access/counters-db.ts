@@ -1,6 +1,6 @@
 import axios from "axios";
 import type {AxiosError} from "axios";
-import {ChainData} from "@vearnfi/config";
+import type {ChainData} from "@vearnfi/config";
 
 export type CountersDb = Readonly<{
   find: () => Promise<number>;
@@ -35,11 +35,15 @@ export function makeCountersDb(chain: ChainData): CountersDb {
    */
   async function update(lastBlockNumber: number): Promise<number> {
     const response = await axios
-      .post(chain.setHeadEndpoint, {lastBlockNumber}, {
-        headers: {
-          "Content-Type": "application/json",
+      .post(
+        chain.setHeadEndpoint,
+        {lastBlockNumber},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      })
+      )
       .catch((error: AxiosError) => {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx

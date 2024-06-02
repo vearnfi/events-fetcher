@@ -13,12 +13,12 @@ module.exports = {
     "<rootDir>/src/__tests__/fixtures",
   ],
   coveragePathIgnorePatterns: [
-    '<rootDir>/src/index.ts',
-    '<rootDir>/src/config/index.ts',
-    '<rootDir>/src/controllers/index.ts',
-    '<rootDir>/src/data-access/index.ts',
-    '<rootDir>/src/typings/global.d.ts',
-    '<rootDir>/src/use-cases/index.ts',
+    "<rootDir>/src/index.ts",
+    "<rootDir>/src/config/index.ts",
+    "<rootDir>/src/controllers/index.ts",
+    "<rootDir>/src/data-access/index.ts",
+    "<rootDir>/src/typings/global.d.ts",
+    "<rootDir>/src/use-cases/index.ts",
   ],
   verbose: true,
 };
