@@ -1,11 +1,8 @@
-import {getChainData} from "@vearnfi/config";
 import {makeGetEvents} from "./get-events";
 
 const mockLogger = jest.fn(({status, data}) => Promise.resolve());
 
 describe("get events controller", () => {
-  const chain = getChainData(100010);
-
   afterEach(() => {
     jest.clearAllMocks();
   });
