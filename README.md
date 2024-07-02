@@ -95,6 +95,11 @@ For an in-depth explanation of how it works, please refer to [Learn Docker - Dev
 docker container logs --follow CONTAINER
 ```
 
+9. Inspect container
+
+```
+docker inspect <containerId> OR <Image_id>
+```
 ## License
 
 This package is licensed under the
