@@ -100,6 +100,19 @@ docker container logs --follow CONTAINER
 ```
 docker inspect <containerId> OR <Image_id>
 ```
+
+10. Docker logs size
+
+```
+sudo sh -c "du -ch /var/lib/docker/containers/*/*-json.log"
+```
+
+11. Cleanup system
+
+```
+docker system prune -a
+```
+
 ## License
 
 This package is licensed under the
