@@ -18,7 +18,7 @@ export type Connect = () => Promise<Connection>;
 
 export function makeConnect(chain: ChainData): Connect {
   return async function connect(): Promise<Connection> {
-    const net = new SimpleNet(chain.rpc[0]);
+    const net = new SimpleNet(chain.rpc[1]);
     const driver = await Driver.connect(net);
     const connex = new Framework(driver);
     const wConnex = wrapConnex(connex);
